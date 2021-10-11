@@ -1,3 +1,58 @@
+const HEADINGS = [
+  'Ты не можешь поменять то, чем само пространство хочет быть',
+  'Уважая историю, вы все равно должны привнести свой собственный опыт в ваш дом',
+  'Серьезно — это слово, которое необходимо избегать, когда речь заходит о декоре',
+  'Моя идея комфорта — это хорошая лампа для чтения',
+  'Великий дизайн начинается с еще более великой истории',
+];
+
+const ADVERT_TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+
+const CHECK_IN_AND_OUT_TIME = ['12:00', '13:00', '14:00'];
+
+const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+
+const DESCRIPTIONS = [
+  'Цикады весной!Вижу папоротник глянцевитый — просвет в чащобе…',
+  'Фор­ма де­вять на трёх А4.Со­рок пять че­ло­век на две­на­дца­ти мет­рах.Пу­сто в да­лё­ком ауле.',
+  'Вместе с хозяином дома. Слушаю молча вечерний звон. Падают листья ивы.',
+  'Умный дом. Вечерним вьюнком, Я в плен захвачен… Недвижно Стою в забытьи. ',
+  'Уединенный дом, В сельской тиши… Даже дятел, В эту дверь не стучит!',
+];
+
+const PHOTOS = [
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
+];
+
+const ADVERT_COUNT = 10;
+const ROOMS = {
+  MIN: 1,
+  MAX: 3,
+};
+const GUESTS = {
+  MIN: 1,
+  MAX: 3,
+};
+
+const LAT = {
+  MIN: 35.65,
+  MAX: 35.7,
+  decimalCount: 5,
+};
+
+const LNG = {
+  MIN: 139.7,
+  MAX: 139.8,
+  decimalCount: 5,
+};
+
+const PRICE = {
+  MIN: 0,
+  MAX: 10000,
+};
+
 const getRandomPositiveInteger = (min, max) => {
   if (min < 0 || max < 0) {
     return -1;
@@ -25,67 +80,52 @@ const getRandomPositiveFloat = (min, max, decimalCount) => {
 };
 getRandomPositiveFloat();
 
-const ADVERT_COUNT = 10;
-const MIN_ADVERT_PRICE = 0;
-const MAX_ADVERT_PRICE = 1000000000;
-const MIN_ROOMS_NUMBER = 1;
-const MAX_ROOMS_NUMBER = 3;
-const MIN_GUESTS_NUMBER = 1;
-const MAX_GUESTS_NUMBER = 3;
-const MIN_LAT_VALUE = 35.65;
-const MAX_LAT_VALUE = 35.7;
-const MIN_LNG_VALUE = 139.7;
-const MAX_LNG_VALUE = 139.8;
+//Функция для генерации случайного элемента
+const getRandomElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
-const ADVERT_TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+//Функция для создания аватара
+const getAuthor = (index) => {
+  index = index + 1;
+  return { avatar: `img/avatars/user${index <= 9 ? `0${index}` : index}.png,` };
+};
 
-const CHECK_IN_AND_OUT_TIME = ['12:00', '13:00', '14:00'];
+//Функция для создания предложения
+const getAdvert = () => ({
+  title: getRandomElement(HEADINGS),
+  address: `${getRandomPositiveFloat(LAT.MIN, LAT.MAX, LAT.decimalCount)}, ${getRandomPositiveFloat(
+    LNG.MIN,
+    LNG.MAX,
+    LNG.decimalCount
+  )}`,
+  price: getRandomPositiveInteger(PRICE.MIN, PRICE.MAX),
+  type: getRandomElement(ADVERT_TYPES),
+  rooms: getRandomPositiveInteger(ROOMS.MIN, ROOMS.MAX),
+  guests: getRandomPositiveInteger(GUESTS.MIN, GUESTS.MAX),
+  checkin: getRandomElement(CHECK_IN_AND_OUT_TIME),
+  checkout: getRandomElement(CHECK_IN_AND_OUT_TIME),
+  features: FEATURES.slice(getRandomPositiveInteger(0, FEATURES.length - 1)),
+  description: getRandomElement(DESCRIPTIONS),
+  photos: PHOTOS.slice(getRandomPositiveInteger(0, PHOTOS.length - 1)),
+});
 
-const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-
-const DESCRIPTIONS = [
-  'Цикады весной!Вижу папоротник глянцевитый — просвет в чащобе…',
-  'Фор­ма де­вять на трёх А4.Со­рок пять че­ло­век на две­на­дца­ти мет­рах.Пу­сто в да­лё­ком ауле.',
-  'Вместе с хозяином дома. Слушаю молча вечерний звон. Падают листья ивы.',
-  'Умный дом. Вечерним вьюнком, Я в плен захвачен… Недвижно Стою в забытьи. ',
-  'Уединенный дом, В сельской тиши… Даже дятел, В эту дверь не стучит!',
-];
-
-const PHOTOS = [
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
-];
+//Функция длдя создания локации
+const getLocation = () => ({
+  lat: getRandomPositiveFloat(LAT.MIN, LAT.MAX, LAT.decimalCount),
+  lng: getRandomPositiveFloat(LNG.MIN, LNG.MAX, LNG.decimalCount),
+});
 
 //Функция, создающая один объект объявления
-const createOneOffer = (index) => ({
-  author: {
-    avatar: `img/avatars/user0${index + 1}.png`,
-  },
-  offer: {
-    title: 'Заголовок',
-    address: '',
-    price: getRandomPositiveInteger(MIN_ADVERT_PRICE, MAX_ADVERT_PRICE),
-    type: ADVERT_TYPES[getRandomPositiveInteger(0, ADVERT_TYPES.length - 1)],
-    rooms: getRandomPositiveInteger(MIN_ROOMS_NUMBER, MAX_ROOMS_NUMBER),
-    guests: getRandomPositiveInteger(MIN_GUESTS_NUMBER, MAX_GUESTS_NUMBER),
-    checkin: CHECK_IN_AND_OUT_TIME[getRandomPositiveInteger(0, CHECK_IN_AND_OUT_TIME.length - 1)],
-    checkout: CHECK_IN_AND_OUT_TIME[getRandomPositiveInteger(0, CHECK_IN_AND_OUT_TIME.length - 1)],
-    features: FEATURES.slice(getRandomPositiveInteger(0, FEATURES.length - 1)),
-    description: DESCRIPTIONS[getRandomPositiveInteger(0, DESCRIPTIONS.length - 1)],
-    photos: PHOTOS.slice(getRandomPositiveInteger(0, PHOTOS.length - 1)),
-  },
-  location: {
-    lat: getRandomPositiveFloat(MIN_LAT_VALUE, MAX_LAT_VALUE, 5),
-    lng: getRandomPositiveFloat(MIN_LNG_VALUE, MAX_LNG_VALUE, 5),
-  },
+const createOneAdvert = (index) => ({
+  author: getAuthor(index),
+  offer: getAdvert(),
+  location: getLocation(),
 });
 
 //Функиця, создающая массив похожих объявлений
 const createAdverts = (advertsCount) => {
   const array = [];
   for (let index = 0; index < advertsCount; index++) {
-    array.push(createOneOffer(index));
+    array.push(createOneAdvert(index));
   }
   return array;
 };
@@ -94,3 +134,7 @@ const createAdverts = (advertsCount) => {
 const adverts = createAdverts(ADVERT_COUNT);
 
 console.log(adverts);
+console.log(getRandomElement(HEADINGS));
+//Вопросы
+//Вопрос 1 - Минимальное количество комнат 1, будет ли это магическим значением? Тоже самое с кроличеством гостей - 1, и минимальной ценной 0;
+//Вопрос 2 -при slice мы обязательно передаем первым 0? Тогда получается у нас всегда в любом предложении будет первый элемент wi-fi, а если просто передать random, то будут разные варианты
