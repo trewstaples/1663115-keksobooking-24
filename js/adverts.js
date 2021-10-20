@@ -1,47 +1,39 @@
 import { adverts } from './data.js';
 
-//Найти блок, куда будут вставляться данные - OK
 const advertsMap = document.querySelector('#map-canvas');
-advertsMap;
 
-//Создать фрагмент, куда будем складывать данные
 const advertsFragment = document.createDocumentFragment();
-advertsFragment;
 
-//Найти шаблон для заполнения данными
 const advertsTemplate = document.querySelector('#card').content.querySelector('.popup');
-advertsTemplate;
 
-//Функция, добавляющая заголовок
+const getDataCondition = (data) => data === '' || data === null || data === undefined;
+
 const fillTitle = (markupElement, attribute, data) => {
-  if (data === '' || data === null || data === undefined) {
+  if (getDataCondition(data)) {
     markupElement.querySelector(attribute).classList.add('hidden');
   } else {
     markupElement.querySelector(attribute).textContent = data;
   }
 };
 
-//Функция, добавляющая адресс
 const fillAdress = (markupElement, attribute, data) => {
-  if (data === '' || data === undefined || data === null) {
+  if (getDataCondition(data)) {
     markupElement.querySelector(attribute).classList.add('hidden');
   } else {
     markupElement.querySelector(attribute).textContent = data;
   }
 };
 
-//Функция, добавляющая цену
 const fillPrice = (markupElement, attribute, data) => {
-  if (data === '' || data === undefined || data === null) {
+  if (getDataCondition(data)) {
     markupElement.querySelector(attribute).classList.add('hidden');
   } else {
     markupElement.querySelector(attribute).textContent = `${data} ₽/ночь`;
   }
 };
 
-//Функция, добавляющая тип
 const fillType = (markupElement, attribute, data, type) => {
-  if (data === '' || data === null || data === undefined) {
+  if (getDataCondition(data)) {
     markupElement.querySelector(attribute).classList.add('hidden');
   } else {
     markupElement.querySelector(attribute).textContent = type;
@@ -64,7 +56,7 @@ const getOfferType = (type) => {
 };
 
 const fillTextCapacity = (markupElement, attribute, roomsData, guestsData) => {
-  if (roomsData === '' || roomsData === null || roomsData === undefined || guestsData === '' || guestsData === null || guestsData === undefined) {
+  if (getDataCondition(roomsData) || getDataCondition(guestsData)) {
     markupElement.querySelector(attribute).classList.add('hidden');
   } else {
     markupElement.querySelector(attribute).textContent = `${roomsData} комнаты для ${guestsData} гостей`;
@@ -72,7 +64,7 @@ const fillTextCapacity = (markupElement, attribute, roomsData, guestsData) => {
 };
 
 const fillPopupTextTime = (markupElement, attribute, checkinData, checkoutData) => {
-  if (checkinData === '' || checkinData === null || checkinData === undefined || checkoutData === '' || checkoutData === null || checkoutData === undefined) {
+  if (getDataCondition(checkinData) || getDataCondition(checkoutData)) {
     markupElement.querySelector(attribute).classList.add('hidden');
   } else {
     markupElement.querySelector(attribute).textContent = `Заезд после ${checkinData}, выезд после ${checkoutData}`;
@@ -80,7 +72,7 @@ const fillPopupTextTime = (markupElement, attribute, checkinData, checkoutData) 
 };
 
 const fillPopupFeatures = (markupElement, attribute, data) => {
-  if (data === '' || data === null || data === undefined) {
+  if (getDataCondition(data)) {
     markupElement.querySelector(attribute).classList.add('hidden');
   } else {
     markupElement.querySelector(attribute).textContent = data;
@@ -88,7 +80,7 @@ const fillPopupFeatures = (markupElement, attribute, data) => {
 };
 
 const fillPopupDescription = (markupElement, attribute, data) => {
-  if (data === '' || data === null || data === undefined) {
+  if (getDataCondition(data)) {
     markupElement.querySelector(attribute).classList.add('hidden');
   } else {
     markupElement.querySelector(attribute).textContent = data;
@@ -96,13 +88,13 @@ const fillPopupDescription = (markupElement, attribute, data) => {
 };
 
 const fillPopupAvatar = (markupElement, attribute, data) => {
-  if (data === '' || data === null || data === undefined) {
+  if (getDataCondition(data)) {
     markupElement.querySelector(attribute).classList.add('hidden');
   } else {
     markupElement.querySelector(attribute).src = `img/avatars/user${data}.png`;
   }
 };
-//Вставить данные из массива в шаблон.
+
 const createAdvert = (advert) => {
   const { author, offer } = advert;
   const newAdvert = advertsTemplate.cloneNode(true);
