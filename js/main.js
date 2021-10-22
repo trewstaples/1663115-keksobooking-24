@@ -1,2 +1,5 @@
 import { adverts } from './data.js';
-adverts;
+import { createAdvert, advertsMap, advertsFragment } from './adverts.js';
+
+createAdvert(adverts[0]);
+advertsMap.appendChild(advertsFragment);
