@@ -13,10 +13,6 @@ const fillTitle = (markupElement, attribute, data) => {
     markupElement.querySelector(attribute).textContent = data;
   }
 };
-/* if (data) {
-markupElement.querySelector(attribute).remove() } else {
-markupElement.querySelector(attribute).textContent = data;
-} */
 
 const fillAdress = (markupElement, attribute, data) => {
   if (!data) {
