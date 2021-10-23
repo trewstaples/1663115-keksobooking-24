@@ -4,35 +4,39 @@ const advertsFragment = document.createDocumentFragment();
 
 const advertsTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-const getDataCondition = (data) => data === '' || data === null || data === undefined;
+// const getDataCondition = (data) => data === '' || data === null || data === undefined;
 
 const fillTitle = (markupElement, attribute, data) => {
-  if (getDataCondition(data)) {
-    markupElement.querySelector(attribute).classList.add('hidden');
+  if (!data) {
+    markupElement.querySelector(attribute).remove();
   } else {
     markupElement.querySelector(attribute).textContent = data;
   }
 };
+/* if (data) {
+markupElement.querySelector(attribute).remove() } else {
+markupElement.querySelector(attribute).textContent = data;
+} */
 
 const fillAdress = (markupElement, attribute, data) => {
-  if (getDataCondition(data)) {
-    markupElement.querySelector(attribute).classList.add('hidden');
+  if (!data) {
+    markupElement.querySelector(attribute).remove();
   } else {
     markupElement.querySelector(attribute).textContent = data;
   }
 };
 
 const fillPrice = (markupElement, attribute, data) => {
-  if (getDataCondition(data)) {
-    markupElement.querySelector(attribute).classList.add('hidden');
+  if (!data) {
+    markupElement.querySelector(attribute).remove();
   } else {
     markupElement.querySelector(attribute).textContent = `${data} ₽/ночь`;
   }
 };
 
 const fillType = (markupElement, attribute, data, type) => {
-  if (getDataCondition(data)) {
-    markupElement.querySelector(attribute).classList.add('hidden');
+  if (!data) {
+    markupElement.querySelector(attribute).remove();
   } else {
     markupElement.querySelector(attribute).textContent = type;
   }
@@ -49,40 +53,40 @@ const offerTypes = {
 const getOfferType = (type) => offerTypes[type];
 
 const fillTextCapacity = (markupElement, attribute, roomsData, guestsData) => {
-  if (getDataCondition(roomsData) || getDataCondition(guestsData)) {
-    markupElement.querySelector(attribute).classList.add('hidden');
+  if (!roomsData || !guestsData) {
+    markupElement.querySelector(attribute).remove();
   } else {
     markupElement.querySelector(attribute).textContent = `${roomsData} комнаты для ${guestsData} гостей`;
   }
 };
 
 const fillPopupTextTime = (markupElement, attribute, checkinData, checkoutData) => {
-  if (getDataCondition(checkinData) || getDataCondition(checkoutData)) {
-    markupElement.querySelector(attribute).classList.add('hidden');
+  if (!checkinData || !checkoutData) {
+    markupElement.querySelector(attribute).remove();
   } else {
     markupElement.querySelector(attribute).textContent = `Заезд после ${checkinData}, выезд после ${checkoutData}`;
   }
 };
 
 const fillPopupFeatures = (markupElement, attribute, data) => {
-  if (getDataCondition(data)) {
-    markupElement.querySelector(attribute).classList.add('hidden');
+  if (!data) {
+    markupElement.querySelector(attribute).remove();
   } else {
     markupElement.querySelector(attribute).textContent = data;
   }
 };
 
 const fillPopupDescription = (markupElement, attribute, data) => {
-  if (getDataCondition(data)) {
-    markupElement.querySelector(attribute).classList.add('hidden');
+  if (!data) {
+    markupElement.querySelector(attribute).remove();
   } else {
     markupElement.querySelector(attribute).textContent = data;
   }
 };
 
 const fillPopupAvatar = (markupElement, attribute, data) => {
-  if (getDataCondition(data)) {
-    markupElement.querySelector(attribute).classList.add('hidden');
+  if (!data) {
+    markupElement.querySelector(attribute).remove();
   } else {
     markupElement.querySelector(attribute).src = data;
   }
