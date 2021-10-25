@@ -7,34 +7,34 @@ const advertsTemplate = document.querySelector('#card').content.querySelector('.
 // const getDataCondition = (data) => data === '' || data === null || data === undefined;
 
 const fillTitle = (markupElement, attribute, data) => {
-  if (!data) {
-    markupElement.querySelector(attribute).remove();
-  } else {
+  if (data) {
     markupElement.querySelector(attribute).textContent = data;
+  } else {
+    markupElement.querySelector(attribute).remove();
   }
 };
 
 const fillAdress = (markupElement, attribute, data) => {
-  if (!data) {
-    markupElement.querySelector(attribute).remove();
-  } else {
+  if (data) {
     markupElement.querySelector(attribute).textContent = data;
+  } else {
+    markupElement.querySelector(attribute).remove();
   }
 };
 
 const fillPrice = (markupElement, attribute, data) => {
-  if (!data) {
-    markupElement.querySelector(attribute).remove();
-  } else {
+  if (data) {
     markupElement.querySelector(attribute).textContent = `${data} ₽/ночь`;
+  } else {
+    markupElement.querySelector(attribute).remove();
   }
 };
 
 const fillType = (markupElement, attribute, data, type) => {
-  if (!data) {
-    markupElement.querySelector(attribute).remove();
-  } else {
+  if (data) {
     markupElement.querySelector(attribute).textContent = type;
+  } else {
+    markupElement.querySelector(attribute).remove();
   }
 };
 
@@ -49,39 +49,39 @@ const offerTypes = {
 const getOfferType = (type) => offerTypes[type];
 
 const fillTextCapacity = (markupElement, attribute, roomsData, guestsData) => {
-  if (!roomsData || !guestsData) {
-    markupElement.querySelector(attribute).remove();
-  } else {
+  if (roomsData || guestsData) {
     markupElement.querySelector(attribute).textContent = `${roomsData} комнаты для ${guestsData} гостей`;
+  } else {
+    markupElement.querySelector(attribute).remove();
   }
 };
 
 const fillPopupTextTime = (markupElement, attribute, checkinData, checkoutData) => {
-  if (!checkinData || !checkoutData) {
-    markupElement.querySelector(attribute).remove();
-  } else {
+  if (checkinData || checkoutData) {
     markupElement.querySelector(attribute).textContent = `Заезд после ${checkinData}, выезд после ${checkoutData}`;
+  } else {
+    markupElement.querySelector(attribute).remove();
   }
 };
 
 const fillPopupFeatures = (markupElement, attribute, data) => {
-  if (!data) {
-    markupElement.querySelector(attribute).remove();
-  } else {
+  if (data) {
     markupElement.querySelector(attribute).textContent = data;
+  } else {
+    markupElement.querySelector(attribute).remove();
   }
 };
 
 const fillPopupDescription = (markupElement, attribute, data) => {
-  if (!data) {
-    markupElement.querySelector(attribute).remove();
-  } else {
+  if (data) {
     markupElement.querySelector(attribute).textContent = data;
+  } else {
+    markupElement.querySelector(attribute).remove();
   }
 };
 
 const fillPopupAvatar = (markupElement, attribute, data) => {
-  if (!data) {
+  if (data) {
     markupElement.querySelector(attribute).remove();
   } else {
     markupElement.querySelector(attribute).src = data;
