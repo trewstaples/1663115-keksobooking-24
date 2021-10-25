@@ -1,31 +1,32 @@
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 
+const disableElements = (elements) => {
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].setAttribute('disabled', '');
+  }
+};
+
+const enableElements = (elements) => {
+  for (let j = 0; j < elements.length; j++) {
+    elements[j].removeAttribute('disabled', '');
+  }
+};
+
 const deactivatePage = () => {
   adForm.classList.add('ad-form--disabled');
-
-  for (let i = 0; i < adForm.children.length; i++) {
-    adForm.children[i].setAttribute('disabled', true);
-  }
-
   mapFilters.classList.add('map__filters--disabled');
 
-  for (let j = 0; j < mapFilters.children.length; j++) {
-    mapFilters.children[j].setAttribute('disabled', true);
-  }
+  disableElements(adForm.children);
+  disableElements(mapFilters.children);
 };
 
 const activatePage = () => {
   adForm.classList.remove('ad-form--disabled');
-
-  for (let k = 0; k < adForm.children.length; k++) {
-    adForm.children[k].removeAttribute('disabled', true);
-  }
   mapFilters.classList.remove('map__filters--disabled');
 
-  for (let l = 0; l < mapFilters.children.length; l++) {
-    mapFilters.children[l].removeAttribute('disabled', true);
-  }
+  enableElements(adForm.children);
+  enableElements(mapFilters.children);
 };
 
 const mapCanvas = document.querySelector('.map__canvas');
@@ -41,4 +42,5 @@ mapCanvas.addEventListener('keydown', (evt) => {
     activatePage();
   }
 });
+
 deactivatePage();
