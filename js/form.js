@@ -3,13 +3,13 @@ const mapFilters = document.querySelector('.map__filters');
 
 const disableElements = (elements) => {
   for (let i = 0; i < elements.length; i++) {
-    elements[i].setAttribute('disabled', '');
+    elements[i].disabled = true;
   }
 };
 
 const enableElements = (elements) => {
   for (let j = 0; j < elements.length; j++) {
-    elements[j].removeAttribute('disabled', '');
+    elements[j].disabled = false;
   }
 };
 

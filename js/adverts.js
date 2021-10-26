@@ -4,8 +4,6 @@ const advertsFragment = document.createDocumentFragment();
 
 const advertsTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-// const getDataCondition = (data) => data === '' || data === null || data === undefined;
-
 const fillTitle = (markupElement, attribute, data) => {
   if (data) {
     markupElement.querySelector(attribute).textContent = data;
