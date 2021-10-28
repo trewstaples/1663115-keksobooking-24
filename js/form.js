@@ -1,9 +1,6 @@
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const disabledFields = document.querySelectorAll('fieldset, select.map__filter');
-const roomNumber = adForm.querySelector('#room_number');
-const capacity = adForm.querySelector('#capacity');
-const guestNumber = capacity.querySelectorAll('option');
 
 const setDisabledState = () => {
   disabledFields.forEach((element) => {
@@ -27,6 +24,10 @@ mapCanvas.addEventListener('mousedown', (evt) => {
     togglePageState();
   }
 });
+
+const roomNumber = adForm.querySelector('#room_number');
+const capacity = adForm.querySelector('#capacity');
+const guestNumber = capacity.querySelectorAll('option');
 
 const numberOfRooms = {
   1: ['1'],
@@ -58,3 +59,28 @@ const onRoomNumberChange = () => {
 };
 
 roomNumber.addEventListener('change', onRoomNumberChange);
+
+const houseType = document.querySelector('#type');
+const housePrice = document.querySelector('#price');
+
+const typeOfHouse = {
+  bungalow: '0',
+  flat: '1000',
+  hotel: '3000',
+  house: '5000',
+  palace: '10000',
+};
+
+const validatePrice = () => {
+  const typeValue = houseType.value;
+  const minPrice = typeOfHouse[typeValue];
+
+  housePrice.min = minPrice;
+  housePrice.placeholder = minPrice;
+};
+
+const onHouseTypeChange = () => {
+  validatePrice();
+};
+
+houseType.addEventListener('change', onHouseTypeChange);
