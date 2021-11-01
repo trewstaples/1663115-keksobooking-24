@@ -2,8 +2,9 @@ import { togglePageState } from './form.js';
 
 const MAP_SCALE = 10;
 const MAIN_PIN_IMAGE = './img/main-pin.svg';
+const NUMBER_OF_DECIMALS = 5;
 
-const MarkerCoordinates = {
+const MainMarkerCoordinates = {
   LAT: 35.62606,
   LNG: 139.77081,
 };
@@ -19,8 +20,8 @@ const map = L.map('map-canvas')
   })
   .setView(
     {
-      lat: MarkerCoordinates.LAT,
-      lng: MarkerCoordinates.LNG,
+      lat: MainMarkerCoordinates.LAT,
+      lng: MainMarkerCoordinates.LNG,
     },
     MAP_SCALE
   );
@@ -37,8 +38,8 @@ const mainPinIcon = L.icon({
 
 const mainMarker = L.marker(
   {
-    lat: MarkerCoordinates.LAT,
-    lng: MarkerCoordinates.LNG,
+    lat: MainMarkerCoordinates.LAT,
+    lng: MainMarkerCoordinates.LNG,
   },
   {
     draggable: true,
@@ -48,6 +49,10 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
+const mapAdress = document.querySelector('#address');
+
+mapAdress.value = `${MainMarkerCoordinates.LAT}, ${MainMarkerCoordinates.LNG}`;
+
 mainMarker.on('moveend', (evt) => {
-  console.log(evt.target.getLatLng());
+  mapAdress.value = `${evt.target.getLatLng().lat.toFixed(NUMBER_OF_DECIMALS)}, ${evt.target.getLatLng().lng.toFixed(NUMBER_OF_DECIMALS)}`;
 });
