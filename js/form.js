@@ -17,13 +17,13 @@ const togglePageState = () => {
 
 togglePageState();
 
-const mapCanvas = document.querySelector('.map__canvas');
+/* const mapCanvas = document.querySelector('.map__canvas');
 
 mapCanvas.addEventListener('mousedown', (evt) => {
   if (evt.button === 0) {
     togglePageState();
   }
-});
+}); */
 
 const roomNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
@@ -89,3 +89,5 @@ timeForm.addEventListener('change', (evt) => {
   timeIn.value = evt.target.value;
   timeOut.value = evt.target.value;
 });
+
+export { setDisabledState, togglePageState };
