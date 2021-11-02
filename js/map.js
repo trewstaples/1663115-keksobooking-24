@@ -1,5 +1,6 @@
 import { togglePageState } from './form.js';
 import { adverts } from './data.js';
+import { createAdvert } from './adverts.js';
 
 const MAP_SCALE = 10;
 const MAIN_PIN_IMAGE = './img/main-pin.svg';
@@ -25,7 +26,7 @@ const map = L.map('map-canvas')
       lat: MainMarkerCoordinates.LAT,
       lng: MainMarkerCoordinates.LNG,
     },
-    MAP_SCALE
+    MAP_SCALE,
   );
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -46,7 +47,7 @@ const mainMarker = L.marker(
   {
     draggable: true,
     icon: mainIcon,
-  }
+  },
 );
 
 mainMarker.addTo(map);
@@ -73,8 +74,8 @@ adverts.forEach((advert) => {
     },
     {
       icon: generalIcon,
-    }
+    },
   );
 
-  marker.addTo(map);
+  marker.addTo(map).bindPopup(createAdvert(advert));
 });
