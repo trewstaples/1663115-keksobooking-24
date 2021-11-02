@@ -1,7 +1,3 @@
-const advertsMap = document.querySelector('#map-canvas');
-
-const advertsFragment = document.createDocumentFragment();
-
 const advertsTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const fillTitle = (markupElement, attribute, data) => {
@@ -105,13 +101,13 @@ const createAdvert = (advert) => {
 
   offer.photos.forEach((photo) => {
     const popupPhoto = photosList.querySelector('.popup__photo').cloneNode(true);
-    popupPhoto.src = photo.src;
+    popupPhoto.src = photo;
     photoFragment.appendChild(popupPhoto);
   });
 
   photosList.innerHTML = '';
   photosList.appendChild(photoFragment);
-  advertsFragment.appendChild(newAdvert);
+  return newAdvert;
 };
 
-export { createAdvert, advertsMap, advertsFragment };
+export { createAdvert };
