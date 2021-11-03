@@ -26,8 +26,6 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-const ADVERT_COUNT = 10;
-
 const Price = {
   MIN: 0,
   MAX: 10000,
