@@ -1,3 +1,4 @@
 import './form.js';
 import './map.js';
-import './load.js';
+import './download.js';
+import './upload.js';

@@ -1,5 +1,6 @@
-import { togglePageState, adForm, mapFilters, setAdFormSubmit } from './form.js';
+import { togglePageState, adForm, mapFilters } from './form.js';
 import { createAdvert } from './adverts.js';
+import { setAdFormSubmit } from './upload.js';
 
 const MAP_SCALE = 10;
 const MAP_ADDRESS = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -53,11 +54,11 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
-const mapAdress = document.querySelector('#address');
-mapAdress.value = `${MapCenterCoordinates.LAT}, ${MapCenterCoordinates.LNG}`;
+const mapAddress = document.querySelector('#address');
+mapAddress.value = `${MapCenterCoordinates.LAT}, ${MapCenterCoordinates.LNG}`;
 
 mainMarker.on('moveend', (evt) => {
-  mapAdress.value = `${evt.target.getLatLng().lat.toFixed(NUMBER_OF_DECIMALS)}, ${evt.target.getLatLng().lng.toFixed(NUMBER_OF_DECIMALS)}`;
+  mapAddress.value = `${evt.target.getLatLng().lat.toFixed(NUMBER_OF_DECIMALS)}, ${evt.target.getLatLng().lng.toFixed(NUMBER_OF_DECIMALS)}`;
 });
 
 const generalIcon = L.icon({
@@ -86,7 +87,7 @@ const resetPage = () => {
   adForm.reset();
   mapFilters.reset();
   mainMarker.setLatLng({ lat: MapCenterCoordinates.LAT, lng: MapCenterCoordinates.LNG });
-  mapAdress.value = `${MapCenterCoordinates.LAT}, ${MapCenterCoordinates.LNG}`;
+  mapAddress.value = `${MapCenterCoordinates.LAT}, ${MapCenterCoordinates.LNG}`;
   map.closePopup();
 };
 
@@ -98,4 +99,4 @@ resetButton.addEventListener('click', (evt) => {
 
 setAdFormSubmit(resetPage);
 
-export { renderMarkers };
+export { renderMarkers, map, mainMarker, MapCenterCoordinates, mapAddress };
