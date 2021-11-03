@@ -85,11 +85,41 @@ timeForm.addEventListener('change', (evt) => {
 const showUploadSuccessAlert = () => {
   const successAlert = document.querySelector('#success').content.querySelector('.success');
   document.body.append(successAlert);
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      successAlert.remove();
+    }
+  });
+
+  document.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    successAlert.remove();
+  });
 };
 
 const showUploadErrorAlert = () => {
   const errorAlert = document.querySelector('#error').content.querySelector('.error');
   document.body.append(errorAlert);
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      errorAlert.remove();
+    }
+  });
+
+  document.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    errorAlert.remove();
+  });
+
+  const errorButton = document.querySelector('.error__button');
+  errorButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    errorAlert.remove();
+  });
 };
 
 const setAdFormSubmit = (onSuccess) => {
