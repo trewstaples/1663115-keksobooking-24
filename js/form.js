@@ -82,4 +82,38 @@ timeForm.addEventListener('change', (evt) => {
   timeOut.value = evt.target.value;
 });
 
-export { setDisabledState, togglePageState };
+const showUploadSuccessAlert = () => {
+  const successAlert = document.querySelector('#success').content.querySelector('.success');
+  document.body.append(successAlert);
+};
+
+const showUploadErrorAlert = () => {
+  const errorAlert = document.querySelector('#error').content.querySelector('.error');
+  document.body.append(errorAlert);
+};
+
+const setAdFormSubmit = (onSuccess) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const formData = new FormData(evt.target);
+
+    fetch('https://24.javascript.pages.academy/keksobooking1', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+          onSuccess();
+          showUploadSuccessAlert();
+        } else {
+          showUploadErrorAlert();
+        }
+      })
+      .catch(() => {
+        showUploadErrorAlert();
+      });
+  });
+};
+
+export { togglePageState, adForm, mapFilters, setAdFormSubmit };

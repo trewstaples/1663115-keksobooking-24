@@ -3,7 +3,7 @@ import { renderMarkers } from './map.js';
 const ADVERT_COUNT = 10;
 const ALERT_SHOW_TIME = 3000;
 
-const showAlert = (message) => {
+const showDownloadErrorAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.position = 'absolute';
   alertContainer.style.left = 0;
@@ -24,7 +24,7 @@ const showAlert = (message) => {
 };
 
 const getAdverts = () =>
-  fetch('https://24.javascript.pages.academy/keksobooking/data1')
+  fetch('https://24.javascript.pages.academy/keksobooking/data')
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -35,7 +35,7 @@ const getAdverts = () =>
       renderMarkers(adverts.slice(0, ADVERT_COUNT));
     })
     .catch(() => {
-      showAlert('サーバーエラー。 カスタマーサポートへのお問い合わせ');
+      showDownloadErrorAlert('Ошибка. Данные не удалось загрузить :(');
     });
 
 getAdverts();
