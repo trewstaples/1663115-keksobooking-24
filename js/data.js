@@ -111,7 +111,7 @@ const createOneAdvert = (index) => ({
   location: getLocation(),
 });
 
-const createAdverts = (advertsCount) => {
+const createAdvertsList = (advertsCount) => {
   const array = [];
   for (let index = 0; index < advertsCount; index++) {
     array.push(createOneAdvert(index));
@@ -119,6 +119,6 @@ const createAdverts = (advertsCount) => {
   return array;
 };
 
-const adverts = createAdverts(ADVERT_COUNT);
+// const adverts = createAdvertsList(ADVERT_COUNT);
 
-export { adverts };
+// export { adverts };

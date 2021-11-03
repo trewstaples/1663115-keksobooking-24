@@ -58,19 +58,23 @@ const fillPopupTextTime = (markupElement, attribute, checkinData, checkoutData) 
   }
 };
 
-const fillPopupFeatures = (markupElement, features) => {
-  const featuresList = markupElement.querySelector('.popup__features');
-  const featureItem = featuresList.querySelector('.popup__feature');
-  const featuresFragment = document.createDocumentFragment();
+const fillPopupFeatures = (markupElement, attribute, features) => {
+  if (features) {
+    const featuresList = markupElement.querySelector(attribute);
+    const featureItem = featuresList.querySelector('.popup__feature');
+    const featuresFragment = document.createDocumentFragment();
 
-  features.forEach((feature) => {
-    const popupFeature = featureItem.cloneNode(true);
-    popupFeature.classList.add(`popup__feature--${feature}`);
-    featuresFragment.appendChild(popupFeature);
-  });
+    features.forEach((feature) => {
+      const popupFeature = featureItem.cloneNode(true);
+      popupFeature.classList.add(`popup__feature--${feature}`);
+      featuresFragment.appendChild(popupFeature);
+    });
 
-  featuresList.innerHTML = '';
-  featuresList.appendChild(featuresFragment);
+    featuresList.innerHTML = '';
+    featuresList.appendChild(featuresFragment);
+  } else {
+    markupElement.querySelector(attribute).remove();
+  }
 };
 
 const fillPopupDescription = (markupElement, attribute, data) => {
@@ -89,18 +93,22 @@ const fillPopupAvatar = (markupElement, attribute, data) => {
   }
 };
 
-const fillPopupPhotos = (markupElement, photos) => {
-  const photosList = markupElement.querySelector('.popup__photos');
-  const photoFragment = document.createDocumentFragment();
+const fillPopupPhotos = (markupElement, attribute, photos) => {
+  if (photos) {
+    const photosList = markupElement.querySelector(attribute);
+    const photoFragment = document.createDocumentFragment();
 
-  photos.forEach((photo) => {
-    const popupPhoto = photosList.querySelector('.popup__photo').cloneNode(true);
-    popupPhoto.src = photo;
-    photoFragment.appendChild(popupPhoto);
-  });
+    photos.forEach((photo) => {
+      const popupPhoto = photosList.querySelector('.popup__photo').cloneNode(true);
+      popupPhoto.src = photo;
+      photoFragment.appendChild(popupPhoto);
+    });
 
-  photosList.innerHTML = '';
-  photosList.appendChild(photoFragment);
+    photosList.innerHTML = '';
+    photosList.appendChild(photoFragment);
+  } else {
+    markupElement.querySelector(attribute).remove();
+  }
 };
 
 const createAdvert = (advert) => {
@@ -113,10 +121,10 @@ const createAdvert = (advert) => {
   fillType(newAdvert, '.popup__type', offer.type, getOfferType(offer.type));
   fillTextCapacity(newAdvert, '.popup__text--capacity', offer.rooms, offer.guests);
   fillPopupTextTime(newAdvert, '.popup__text--time', offer.checkin, offer.checkout);
-  fillPopupFeatures(newAdvert, offer.features);
+  fillPopupFeatures(newAdvert, '.popup__features', offer.features);
   fillPopupDescription(newAdvert, '.popup__description', offer.description);
   fillPopupAvatar(newAdvert, '.popup__avatar', author.avatar);
-  fillPopupPhotos(newAdvert, offer.photos);
+  fillPopupPhotos(newAdvert, '.popup__photos', offer.photos);
 
   return newAdvert;
 };

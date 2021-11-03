@@ -1,5 +1,4 @@
 import { togglePageState } from './form.js';
-import { adverts } from './data.js';
 import { createAdvert } from './adverts.js';
 
 const MAP_SCALE = 10;
@@ -68,16 +67,20 @@ const generalIcon = L.icon({
   iconAnchor: [MarkerSizes.WIDTH / 2, MarkerSizes.HEIGHT],
 });
 
-adverts.forEach((advert) => {
-  const marker = L.marker(
-    {
-      lat: advert.location.lat,
-      lng: advert.location.lng,
-    },
-    {
-      icon: generalIcon,
-    },
-  );
+const renderMarkers = (adverts) => {
+  adverts.forEach((advert) => {
+    const marker = L.marker(
+      {
+        lat: advert.location.lat,
+        lng: advert.location.lng,
+      },
+      {
+        icon: generalIcon,
+      },
+    );
 
-  marker.addTo(map).bindPopup(createAdvert(advert));
-});
+    marker.addTo(map).bindPopup(createAdvert(advert));
+  });
+};
+
+export { renderMarkers };
