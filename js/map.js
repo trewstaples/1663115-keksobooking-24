@@ -1,6 +1,5 @@
 import { togglePageState, adForm, mapFilters } from './form.js';
 import { createAdvert } from './adverts.js';
-import { setAdFormSubmit } from './upload.js';
 
 const MAP_SCALE = 10;
 const MAP_ADDRESS = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -21,17 +20,7 @@ const MarkerSizes = {
   HEIGHT: 52,
 };
 
-const map = L.map('map-canvas')
-  .on('load', () => {
-    togglePageState();
-  })
-  .setView(
-    {
-      lat: MapCenterCoordinates.LAT,
-      lng: MapCenterCoordinates.LNG,
-    },
-    MAP_SCALE,
-  );
+const map = L.map('map-canvas');
 
 L.tileLayer(MAP_ADDRESS, MAP_ATTRIBUTION).addTo(map);
 
@@ -97,6 +86,16 @@ resetButton.addEventListener('click', (evt) => {
   resetPage();
 });
 
-setAdFormSubmit(resetPage);
+map
+  .on('load', () => {
+    togglePageState();
+  })
+  .setView(
+    {
+      lat: MapCenterCoordinates.LAT,
+      lng: MapCenterCoordinates.LNG,
+    },
+    MAP_SCALE,
+  );
 
-export { renderMarkers, map, mainMarker, MapCenterCoordinates, mapAddress };
+export { renderMarkers, resetPage };

@@ -1,9 +1,10 @@
 import { renderMarkers } from './map.js';
+import { request } from './request.js';
 
 const ADVERT_COUNT = 10;
 const ALERT_SHOW_TIME = 3000;
 
-const showDownloadErrorAlert = (message) => {
+const onDownloadError = () => {
   const alertContainer = document.createElement('div');
   alertContainer.style.position = 'absolute';
   alertContainer.style.left = 0;
@@ -14,7 +15,7 @@ const showDownloadErrorAlert = (message) => {
   alertContainer.style.textAlign = 'center';
   alertContainer.style.backgroundColor = 'red';
 
-  alertContainer.textContent = message;
+  alertContainer.textContent = 'Ошибка. Данные не удалось загрузить :(';
 
   document.body.append(alertContainer);
 
@@ -23,19 +24,11 @@ const showDownloadErrorAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-const getAdverts = () =>
-  fetch('https://24.javascript.pages.academy/keksobooking/data')
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error(`${response.status} ${response.statusText}`);
-    })
-    .then((adverts) => {
-      renderMarkers(adverts.slice(0, ADVERT_COUNT));
-    })
-    .catch(() => {
-      showDownloadErrorAlert('Ошибка. Данные не удалось загрузить :(');
-    });
+let adverts = [];
 
-getAdverts();
+const onDownloadSuccess = (data) => {
+  adverts = data.slice();
+  renderMarkers(adverts.slice(0, ADVERT_COUNT));
+};
+
+request(onDownloadSuccess, onDownloadError, 'GET');

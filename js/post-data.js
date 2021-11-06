@@ -1,4 +1,6 @@
 import { adForm } from './form.js';
+import { request } from './request.js';
+import { resetPage } from './map.js';
 
 const exitEscKeyDown = (element) => {
   document.addEventListener('keydown', (evt) => {
@@ -24,7 +26,7 @@ const showUploadSuccessAlert = () => {
   exitPageClick(successAlert);
 };
 
-const showUploadErrorAlert = () => {
+const onUploadError = () => {
   const errorAlert = document.querySelector('#error').content.querySelector('.error');
   document.body.append(errorAlert);
 
@@ -38,28 +40,18 @@ const showUploadErrorAlert = () => {
   });
 };
 
-const setAdFormSubmit = (onSuccess) => {
+const onUploadSuccess = () => {
+  resetPage();
+  showUploadSuccessAlert();
+};
+
+const sendData = () => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     const formData = new FormData(evt.target);
-
-    fetch('https://24.javascript.pages.academy/keksobooking1', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => {
-        if (response.ok) {
-          onSuccess();
-          showUploadSuccessAlert();
-        } else {
-          showUploadErrorAlert();
-        }
-      })
-      .catch(() => {
-        showUploadErrorAlert();
-      });
+    request(onUploadSuccess, onUploadError, 'POST', formData);
   });
 };
 
-export { setAdFormSubmit };
+sendData();
