@@ -1,5 +1,4 @@
 import { renderMarkers } from './map.js';
-import { request } from './request.js';
 
 const ADVERT_COUNT = 10;
 const ALERT_SHOW_TIME = 3000;
@@ -31,4 +30,4 @@ const onDownloadSuccess = (data) => {
   renderMarkers(adverts.slice(0, ADVERT_COUNT));
 };
 
-request(onDownloadSuccess, onDownloadError, 'GET');
+export { onDownloadError, onDownloadSuccess };

@@ -1,5 +1,7 @@
 import { togglePageState, adForm, mapFilters } from './form.js';
 import { createAdvert } from './adverts.js';
+import { onDownloadError, onDownloadSuccess } from './get-data.js';
+import { request } from './request.js';
 
 const MAP_SCALE = 10;
 const MAP_ADDRESS = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -89,6 +91,7 @@ resetButton.addEventListener('click', (evt) => {
 map
   .on('load', () => {
     togglePageState();
+    request(onDownloadSuccess, onDownloadError, 'GET');
   })
   .setView(
     {
