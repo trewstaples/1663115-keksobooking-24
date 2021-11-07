@@ -82,4 +82,4 @@ timeForm.addEventListener('change', (evt) => {
   timeOut.value = evt.target.value;
 });
 
-export { setDisabledState, togglePageState };
+export { togglePageState, adForm, mapFilters };

@@ -58,9 +58,20 @@ const fillPopupTextTime = (markupElement, attribute, checkinData, checkoutData) 
   }
 };
 
-const fillPopupFeatures = (markupElement, attribute, data) => {
-  if (data) {
-    markupElement.querySelector(attribute).textContent = data;
+const fillPopupFeatures = (markupElement, attribute, features) => {
+  if (features) {
+    const featuresList = markupElement.querySelector(attribute);
+    const featureItem = featuresList.querySelector('.popup__feature');
+    const featuresFragment = document.createDocumentFragment();
+
+    features.forEach((feature) => {
+      const popupFeature = featureItem.cloneNode(true);
+      popupFeature.classList.add(`popup__feature--${feature}`);
+      featuresFragment.appendChild(popupFeature);
+    });
+
+    featuresList.innerHTML = '';
+    featuresList.appendChild(featuresFragment);
   } else {
     markupElement.querySelector(attribute).remove();
   }
@@ -82,6 +93,24 @@ const fillPopupAvatar = (markupElement, attribute, data) => {
   }
 };
 
+const fillPopupPhotos = (markupElement, attribute, photos) => {
+  if (photos) {
+    const photosList = markupElement.querySelector(attribute);
+    const photoFragment = document.createDocumentFragment();
+
+    photos.forEach((photo) => {
+      const popupPhoto = photosList.querySelector('.popup__photo').cloneNode(true);
+      popupPhoto.src = photo;
+      photoFragment.appendChild(popupPhoto);
+    });
+
+    photosList.innerHTML = '';
+    photosList.appendChild(photoFragment);
+  } else {
+    markupElement.querySelector(attribute).remove();
+  }
+};
+
 const createAdvert = (advert) => {
   const { author, offer } = advert;
   const newAdvert = advertsTemplate.cloneNode(true);
@@ -95,18 +124,8 @@ const createAdvert = (advert) => {
   fillPopupFeatures(newAdvert, '.popup__features', offer.features);
   fillPopupDescription(newAdvert, '.popup__description', offer.description);
   fillPopupAvatar(newAdvert, '.popup__avatar', author.avatar);
+  fillPopupPhotos(newAdvert, '.popup__photos', offer.photos);
 
-  const photosList = newAdvert.querySelector('.popup__photos');
-  const photoFragment = document.createDocumentFragment();
-
-  offer.photos.forEach((photo) => {
-    const popupPhoto = photosList.querySelector('.popup__photo').cloneNode(true);
-    popupPhoto.src = photo;
-    photoFragment.appendChild(popupPhoto);
-  });
-
-  photosList.innerHTML = '';
-  photosList.appendChild(photoFragment);
   return newAdvert;
 };
 

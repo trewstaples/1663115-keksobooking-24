@@ -1,5 +1,4 @@
-import { togglePageState } from './form.js';
-import { adverts } from './data.js';
+import { togglePageState, adForm, mapFilters } from './form.js';
 import { createAdvert } from './adverts.js';
 
 const MAP_SCALE = 10;
@@ -7,8 +6,8 @@ const MAP_ADDRESS = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const MAP_ATTRIBUTION = {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 };
-const MAIN_PIN_IMAGE = './img/main-pin.svg';
-const GENERAL_PIN_IMAGE = './img/pin.svg';
+const MAIN_MARKER_IMAGE = './img/main-pin.svg';
+const GENERAL_MARKER_IMAGE = './img/pin.svg';
 const NUMBER_OF_DECIMALS = 5;
 
 const MapCenterCoordinates = {
@@ -21,22 +20,12 @@ const MarkerSizes = {
   HEIGHT: 52,
 };
 
-const map = L.map('map-canvas')
-  .on('load', () => {
-    togglePageState();
-  })
-  .setView(
-    {
-      lat: MapCenterCoordinates.LAT,
-      lng: MapCenterCoordinates.LNG,
-    },
-    MAP_SCALE,
-  );
+const map = L.map('map-canvas');
 
 L.tileLayer(MAP_ADDRESS, MAP_ATTRIBUTION).addTo(map);
 
 const mainIcon = L.icon({
-  iconUrl: MAIN_PIN_IMAGE,
+  iconUrl: MAIN_MARKER_IMAGE,
   iconSize: [MarkerSizes.WIDTH, MarkerSizes.HEIGHT],
   iconAnchor: [MarkerSizes.WIDTH / 2, MarkerSizes.HEIGHT],
 });
@@ -54,30 +43,59 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
-const mapAdress = document.querySelector('#address');
-
-mapAdress.value = `${MapCenterCoordinates.LAT}, ${MapCenterCoordinates.LNG}`;
+const mapAddress = document.querySelector('#address');
+mapAddress.value = `${MapCenterCoordinates.LAT}, ${MapCenterCoordinates.LNG}`;
 
 mainMarker.on('moveend', (evt) => {
-  mapAdress.value = `${evt.target.getLatLng().lat.toFixed(NUMBER_OF_DECIMALS)}, ${evt.target.getLatLng().lng.toFixed(NUMBER_OF_DECIMALS)}`;
+  mapAddress.value = `${evt.target.getLatLng().lat.toFixed(NUMBER_OF_DECIMALS)}, ${evt.target.getLatLng().lng.toFixed(NUMBER_OF_DECIMALS)}`;
 });
 
 const generalIcon = L.icon({
-  iconUrl: GENERAL_PIN_IMAGE,
+  iconUrl: GENERAL_MARKER_IMAGE,
   iconSize: [MarkerSizes.WIDTH, MarkerSizes.HEIGHT],
   iconAnchor: [MarkerSizes.WIDTH / 2, MarkerSizes.HEIGHT],
 });
 
-adverts.forEach((advert) => {
-  const marker = L.marker(
+const renderMarkers = (adverts) => {
+  adverts.forEach((advert) => {
+    const marker = L.marker(
+      {
+        lat: advert.location.lat,
+        lng: advert.location.lng,
+      },
+      {
+        icon: generalIcon,
+      },
+    );
+
+    marker.addTo(map).bindPopup(createAdvert(advert));
+  });
+};
+
+const resetPage = () => {
+  adForm.reset();
+  mapFilters.reset();
+  mainMarker.setLatLng({ lat: MapCenterCoordinates.LAT, lng: MapCenterCoordinates.LNG });
+  mapAddress.value = `${MapCenterCoordinates.LAT}, ${MapCenterCoordinates.LNG}`;
+  map.closePopup();
+};
+
+const resetButton = document.querySelector('.ad-form__reset');
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetPage();
+});
+
+map
+  .on('load', () => {
+    togglePageState();
+  })
+  .setView(
     {
-      lat: advert.location.lat,
-      lng: advert.location.lng,
+      lat: MapCenterCoordinates.LAT,
+      lng: MapCenterCoordinates.LNG,
     },
-    {
-      icon: generalIcon,
-    },
+    MAP_SCALE,
   );
 
-  marker.addTo(map).bindPopup(createAdvert(advert));
-});
+export { renderMarkers, resetPage };
