@@ -58,6 +58,7 @@ const generalIcon = L.icon({
   iconAnchor: [MarkerSizes.WIDTH / 2, MarkerSizes.HEIGHT],
 });
 
+const markers = [];
 const renderMarkers = (adverts) => {
   adverts.forEach((advert) => {
     const marker = L.marker(
@@ -69,7 +70,7 @@ const renderMarkers = (adverts) => {
         icon: generalIcon,
       },
     );
-
+    markers.push(marker);
     marker.addTo(map).bindPopup(createAdvert(advert));
   });
 };
@@ -101,4 +102,10 @@ map
     MAP_SCALE,
   );
 
-export { renderMarkers, resetPage };
+const deleteMarkers = () => {
+  markers.forEach((marker) => {
+    map.removeLayer(marker);
+  });
+};
+
+export { renderMarkers, resetPage, map, deleteMarkers };
