@@ -25,9 +25,21 @@ const onDownloadError = () => {
 
 let adverts = [];
 
+//Отсортировать массив в зависимости от выбранного типа размещения по клику и отрисовать похожие объявления
+//Написать функцию, которая будет сравнивать тип каждого объявления с выбранным типом в фильтрации
+const housingType = document.querySelector('#housing-type');
+
 const onDownloadSuccess = (data) => {
   adverts = data.slice();
+  console.log(adverts);
   renderMarkers(adverts.slice(0, ADVERT_COUNT));
+
+  housingType.addEventListener('change', (evt) => {
+    const typeOfHouse = evt.target.value;
+    console.log(typeOfHouse);
+    const flatAdverts = adverts.filter((advert) => advert.offer.type === typeOfHouse);
+    renderMarkers(flatAdverts.slice(0, ADVERT_COUNT));
+  });
 };
 
 export { onDownloadError, onDownloadSuccess };
