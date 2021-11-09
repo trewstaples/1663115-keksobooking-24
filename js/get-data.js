@@ -1,4 +1,4 @@
-import { renderMarkers, deleteMarkers } from './map.js';
+import { renderMarkers, deleteMarkers, mapFilters } from './map.js';
 
 const ADVERT_COUNT = 10;
 const ALERT_SHOW_TIME = 3000;
@@ -25,90 +25,73 @@ const onDownloadError = () => {
 
 let adverts = [];
 
-const housingType = document.querySelector('#housing-type');
+const Types = {
+  housing: 'housing-type',
+  price: 'housing-price',
+  rooms: 'housing-rooms',
+  guests: 'housing-guests',
+};
 
 const onDownloadSuccess = (data) => {
   adverts = data.slice();
   console.log(adverts);
   renderMarkers(adverts.slice(0, ADVERT_COUNT));
 
-  const getType = (option, type) => {
-    switch (option) {
-      case 'any':
-        return type;
-      default:
-        return type === option;
+  mapFilters.addEventListener('change', (evt) => {
+    const changeType = evt.target.id;
+    const changeOption = evt.target.value;
+    console.log(changeOption);
+
+    if (changeType === Types.housing) {
+      deleteMarkers();
+      const flatAdverts = adverts.filter((advert) => advert.offer.type === changeOption);
+      renderMarkers(flatAdverts.slice(0, ADVERT_COUNT));
+    } else if (changeType === Types.price) {
+      const getPrice = (option, price) => {
+        switch (option) {
+          case 'any':
+            return price;
+          case 'low':
+            return price < 10000;
+          case 'middle':
+            return price > 10000 && price < 50000;
+          case 'high':
+            return price > 50000;
+        }
+      };
+
+      deleteMarkers();
+      const flatAdverts = adverts.filter((advert) => getPrice(changeOption, advert.offer.price));
+      renderMarkers(flatAdverts.slice(0, ADVERT_COUNT));
+    } else if (changeType === Types.rooms) {
+      const getRooms = (option, rooms) => {
+        switch (option) {
+          case 'any':
+            return rooms;
+          default:
+            return rooms === Number(option);
+        }
+      };
+
+      deleteMarkers();
+      const flatAdverts = adverts.filter((advert) => getRooms(changeOption, advert.offer.rooms));
+      renderMarkers(flatAdverts.slice(0, ADVERT_COUNT));
+    } else if (changeType === Types.guests) {
+      const getGuests = (option, guests) => {
+        switch (option) {
+          case 'any':
+            return guests;
+          default:
+            return guests === Number(option);
+        }
+      };
+
+      deleteMarkers();
+      const flatAdverts = adverts.filter((advert) => getGuests(changeOption, advert.offer.guests));
+      renderMarkers(flatAdverts.slice(0, ADVERT_COUNT));
+    } else {
+      console.log('Изменеён какой-то другой тип');
     }
-  };
-
-  housingType.addEventListener('change', (evt) => {
-    const typeOfHouse = evt.target.value;
-    deleteMarkers();
-    const flatAdverts = adverts.filter((advert) => getType(typeOfHouse, advert.offer.type));
-    renderMarkers(flatAdverts.slice(0, ADVERT_COUNT));
-  });
-
-  const getPrice = (option, price) => {
-    switch (option) {
-      case 'any':
-        return price;
-      case 'low':
-        return price < 10000;
-      case 'middle':
-        return price > 10000 && price < 50000;
-      case 'high':
-        return price > 50000;
-    }
-  };
-
-  const housingPrice = document.querySelector('#housing-price');
-  housingPrice.addEventListener('change', (evt) => {
-    const priceOfHouse = evt.target.value;
-    deleteMarkers();
-    const flatAdverts = adverts.filter((advert) => getPrice(priceOfHouse, advert.offer.price));
-    renderMarkers(flatAdverts.slice(0, ADVERT_COUNT));
-  });
-
-  const getRooms = (option, rooms) => {
-    switch (option) {
-      case 'any':
-        return rooms;
-      case '1':
-        return rooms === 1;
-      case '2':
-        return rooms === 2;
-      case '3':
-        return rooms === 3;
-    }
-  };
-
-  const housingRooms = document.querySelector('#housing-rooms');
-  housingRooms.addEventListener('change', (evt) => {
-    const roomsOfHouse = evt.target.value;
-    deleteMarkers();
-    const flatAdverts = adverts.filter((advert) => getRooms(roomsOfHouse, advert.offer.rooms));
-    renderMarkers(flatAdverts.slice(0, ADVERT_COUNT));
-  });
-
-  const getGuests = (option, guests) => {
-    switch (option) {
-      case 'any':
-        return guests;
-      case '1':
-        return guests === 1;
-      case '2':
-        return guests === 2;
-      case '0':
-        return guests === 0;
-    }
-  };
-
-  const housingGuests = document.querySelector('#housing-guests');
-  housingGuests.addEventListener('change', (evt) => {
-    const guestsOfHouse = evt.target.value;
-    deleteMarkers();
-    const flatAdverts = adverts.filter((advert) => getGuests(guestsOfHouse, advert.offer.guests));
-    renderMarkers(flatAdverts.slice(0, ADVERT_COUNT));
   });
 };
 

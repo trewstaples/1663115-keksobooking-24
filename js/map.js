@@ -108,4 +108,4 @@ const deleteMarkers = () => {
   });
 };
 
-export { renderMarkers, resetPage, map, deleteMarkers };
+export { renderMarkers, resetPage, map, deleteMarkers, mapFilters };
