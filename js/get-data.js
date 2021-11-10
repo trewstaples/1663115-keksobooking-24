@@ -1,4 +1,5 @@
 import { renderMarkers, deleteMarkers, mapFilters } from './map.js';
+import { debounce } from './utils/debounce.js';
 
 const ADVERT_COUNT = 10;
 const ALERT_SHOW_TIME = 3000;
@@ -23,23 +24,18 @@ const onDownloadError = () => {
   }, ALERT_SHOW_TIME);
 };
 
-let adverts = [];
+const housingType = document.querySelector('#housing-type');
+const housingPrice = document.querySelector('#housing-price');
+const housingRooms = document.querySelector('#housing-rooms');
+const housingGuests = document.querySelector('#housing-guests');
+const filterWiFi = document.querySelector('#filter-wifi');
+const filterDishwasher = document.querySelector('#filter-dishwasher');
+const filterParking = document.querySelector('#filter-parking');
+const filterWasher = document.querySelector('#filter-washer');
+const filterElevator = document.querySelector('#filter-elevator');
+const filterConditioner = document.querySelector('#filter-conditioner');
 
-const onDownloadSuccess = (data) => {
-  adverts = data.slice();
-  renderMarkers(adverts.slice(0, ADVERT_COUNT));
-
-  const housingType = document.querySelector('#housing-type');
-  const housingPrice = document.querySelector('#housing-price');
-  const housingRooms = document.querySelector('#housing-rooms');
-  const housingGuests = document.querySelector('#housing-guests');
-  const filterWiFi = document.querySelector('#filter-wifi');
-  const filterDishwasher = document.querySelector('#filter-dishwasher');
-  const filterParking = document.querySelector('#filter-parking');
-  const filterWasher = document.querySelector('#filter-washer');
-  const filterElevator = document.querySelector('#filter-elevator');
-  const filterConditioner = document.querySelector('#filter-conditioner');
-
+const setMapFiltersClick = (adverts) => {
   mapFilters.addEventListener('change', () => {
     const selectedType = housingType.value;
     const selectedPrice = housingPrice.value;
@@ -129,8 +125,16 @@ const onDownloadSuccess = (data) => {
       .filter((advert) => getCapacity(selectedGuests, advert.offer.guests))
       .slice()
       .sort(compareAdverts);
-    renderMarkers(filteredAdverts.slice(0, ADVERT_COUNT));
+
+    const filterAdverts = debounce(() => renderMarkers(filteredAdverts.slice(0, ADVERT_COUNT)));
+    filterAdverts();
   });
+};
+let ads = [];
+const onDownloadSuccess = (data) => {
+  ads = data.slice();
+  renderMarkers(ads.slice(0, ADVERT_COUNT));
+  setMapFiltersClick(data);
 };
 
 export { onDownloadError, onDownloadSuccess };
