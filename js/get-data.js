@@ -112,21 +112,12 @@ const onDownloadSuccess = (data) => {
       }
     };
 
-    const getRooms = (option, rooms) => {
+    const getCapacity = (option, items) => {
       switch (option) {
         case 'any':
-          return rooms;
+          return items;
         default:
-          return rooms === Number(option);
-      }
-    };
-
-    const getGuests = (option, guests) => {
-      switch (option) {
-        case 'any':
-          return guests;
-        default:
-          return guests === Number(option);
+          return items === Number(option);
       }
     };
 
@@ -134,8 +125,8 @@ const onDownloadSuccess = (data) => {
     const filteredAdverts = adverts
       .filter((advert) => getType(selectedType, advert.offer.type))
       .filter((advert) => getPrice(selectedPrice, advert.offer.price))
-      .filter((advert) => getRooms(selectedRooms, advert.offer.rooms))
-      .filter((advert) => getGuests(selectedGuests, advert.offer.guests))
+      .filter((advert) => getCapacity(selectedRooms, advert.offer.rooms))
+      .filter((advert) => getCapacity(selectedGuests, advert.offer.guests))
       .slice()
       .sort(compareAdverts);
     renderMarkers(filteredAdverts.slice(0, ADVERT_COUNT));
