@@ -33,12 +33,103 @@ const onDownloadSuccess = (data) => {
   const housingPrice = document.querySelector('#housing-price');
   const housingRooms = document.querySelector('#housing-rooms');
   const housingGuests = document.querySelector('#housing-guests');
+  const filterWiFi = document.querySelector('#filter-wifi');
+  const filterDishwasher = document.querySelector('#filter-dishwasher');
+  const filterParking = document.querySelector('#filter-parking');
+  const filterWasher = document.querySelector('#filter-washer');
+  const filterElevator = document.querySelector('#filter-elevator');
+  const filterConditioner = document.querySelector('#filter-conditioner');
 
   mapFilters.addEventListener('change', () => {
     const selectedType = housingType.value;
     const selectedPrice = housingPrice.value;
     const selectedRooms = housingRooms.value;
     const selectedGuests = housingGuests.value;
+    const isWiFiChecked = filterWiFi.checked;
+    const isDishwasherChecked = filterDishwasher.checked;
+    const isParkingChecked = filterParking.checked;
+    const isWasherChecked = filterWasher.checked;
+    const isElevatorChecked = filterElevator.checked;
+    const isConditionerChecked = filterConditioner.checked;
+
+    const filterByWiFi = (advert) => {
+      if (isWiFiChecked && advert.offer.features) {
+        return advert.offer.features.includes('wifi');
+      }
+      return false;
+    };
+
+    const filterByDishwasher = (advert) => {
+      if (isDishwasherChecked && advert.offer.features) {
+        return advert.offer.features.includes('dishwasher');
+      }
+      return false;
+    };
+
+    const filterByParking = (advert) => {
+      if (isParkingChecked && advert.offer.features) {
+        return advert.offer.features.includes('parking');
+      }
+      return false;
+    };
+
+    const filterByWasher = (advert) => {
+      if (isWasherChecked && advert.offer.features) {
+        return advert.offer.features.includes('washer');
+      }
+      return false;
+    };
+
+    const filterByElevator = (advert) => {
+      if (isElevatorChecked && advert.offer.features) {
+        return advert.offer.features.includes('elevator');
+      }
+      return false;
+    };
+
+    const filterByConditioner = (advert) => {
+      if (isConditionerChecked && advert.offer.features) {
+        return advert.offer.features.includes('conditioner');
+      }
+      return false;
+    };
+
+    const getAdvertRank = (advert) => {
+      let rank = 0;
+
+      if (filterByWiFi(advert) === true) {
+        rank += 1;
+      }
+
+      if (filterByDishwasher(advert) === true) {
+        rank += 1;
+      }
+
+      if (filterByParking(advert) === true) {
+        rank += 1;
+      }
+
+      if (filterByWasher(advert) === true) {
+        rank += 1;
+      }
+
+      if (filterByElevator(advert) === true) {
+        rank += 1;
+      }
+
+      if (filterByConditioner(advert) === true) {
+        rank += 1;
+      }
+
+      return rank;
+    };
+
+    const compareAdverts = (advertA, advertB) => {
+      const rankA = getAdvertRank(advertA);
+      const rankB = getAdvertRank(advertB);
+
+      return rankB - rankA;
+    };
 
     const getType = (option, type) => {
       switch (option) {
@@ -85,7 +176,9 @@ const onDownloadSuccess = (data) => {
       .filter((advert) => getType(selectedType, advert.offer.type))
       .filter((advert) => getPrice(selectedPrice, advert.offer.price))
       .filter((advert) => getRooms(selectedRooms, advert.offer.rooms))
-      .filter((advert) => getGuests(selectedGuests, advert.offer.guests));
+      .filter((advert) => getGuests(selectedGuests, advert.offer.guests))
+      .slice()
+      .sort(compareAdverts);
     renderMarkers(filteredAdverts.slice(0, ADVERT_COUNT));
   });
 };
