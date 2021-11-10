@@ -45,51 +45,10 @@ const onDownloadSuccess = (data) => {
     const selectedPrice = housingPrice.value;
     const selectedRooms = housingRooms.value;
     const selectedGuests = housingGuests.value;
-    const isWiFiChecked = filterWiFi.checked;
-    const isDishwasherChecked = filterDishwasher.checked;
-    const isParkingChecked = filterParking.checked;
-    const isWasherChecked = filterWasher.checked;
-    const isElevatorChecked = filterElevator.checked;
-    const isConditionerChecked = filterConditioner.checked;
 
-    const filterByWiFi = (advert) => {
-      if (isWiFiChecked && advert.offer.features) {
-        return advert.offer.features.includes('wifi');
-      }
-      return false;
-    };
-
-    const filterByDishwasher = (advert) => {
-      if (isDishwasherChecked && advert.offer.features) {
-        return advert.offer.features.includes('dishwasher');
-      }
-      return false;
-    };
-
-    const filterByParking = (advert) => {
-      if (isParkingChecked && advert.offer.features) {
-        return advert.offer.features.includes('parking');
-      }
-      return false;
-    };
-
-    const filterByWasher = (advert) => {
-      if (isWasherChecked && advert.offer.features) {
-        return advert.offer.features.includes('washer');
-      }
-      return false;
-    };
-
-    const filterByElevator = (advert) => {
-      if (isElevatorChecked && advert.offer.features) {
-        return advert.offer.features.includes('elevator');
-      }
-      return false;
-    };
-
-    const filterByConditioner = (advert) => {
-      if (isConditionerChecked && advert.offer.features) {
-        return advert.offer.features.includes('conditioner');
+    const filterByFeature = (advert, filter) => {
+      if (filter.checked && advert.offer.features) {
+        return advert.offer.features.includes(filter.value);
       }
       return false;
     };
@@ -97,27 +56,27 @@ const onDownloadSuccess = (data) => {
     const getAdvertRank = (advert) => {
       let rank = 0;
 
-      if (filterByWiFi(advert) === true) {
+      if (filterByFeature(advert, filterWiFi) === true) {
         rank += 1;
       }
 
-      if (filterByDishwasher(advert) === true) {
+      if (filterByFeature(advert, filterDishwasher) === true) {
         rank += 1;
       }
 
-      if (filterByParking(advert) === true) {
+      if (filterByFeature(advert, filterParking) === true) {
         rank += 1;
       }
 
-      if (filterByWasher(advert) === true) {
+      if (filterByFeature(advert, filterWasher) === true) {
         rank += 1;
       }
 
-      if (filterByElevator(advert) === true) {
+      if (filterByFeature(advert, filterElevator) === true) {
         rank += 1;
       }
 
-      if (filterByConditioner(advert) === true) {
+      if (filterByFeature(advert, filterConditioner) === true) {
         rank += 1;
       }
 
