@@ -1,4 +1,5 @@
-import { renderMarkers, removeMarkers, mapFilters } from './map.js';
+import { renderMarkers, removeMarkers, resetPage } from './map.js';
+import { mapFilters } from './form.js';
 import { debounce } from './debounce.js';
 import { filterData } from './filter.js';
 
@@ -26,6 +27,7 @@ const onDownloadError = () => {
 };
 
 let adverts = [];
+const resetButton = document.querySelector('.ad-form__reset');
 
 const onMapFiltersChange = debounce(() => {
   removeMarkers();
@@ -38,6 +40,11 @@ const onDownloadSuccess = (data) => {
   renderMarkers(adverts.slice(0, ADVERT_COUNT));
 
   mapFilters.addEventListener('change', onMapFiltersChange);
+
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetPage(adverts);
+  });
 };
 
 export { onDownloadError, onDownloadSuccess };

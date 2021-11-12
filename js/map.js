@@ -3,6 +3,7 @@ import { createAdvert } from './adverts.js';
 import { onDownloadError, onDownloadSuccess } from './get-data.js';
 import { request } from './request.js';
 
+const ADVERT_COUNT = 10;
 const MAP_SCALE = 10;
 const MAP_ADDRESS = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const MAP_ATTRIBUTION = {
@@ -10,7 +11,7 @@ const MAP_ATTRIBUTION = {
 };
 const MAIN_MARKER_IMAGE = './img/main-pin.svg';
 const GENERAL_MARKER_IMAGE = './img/pin.svg';
-const NUMBER_OF_DECIMALS = 4;
+const NUMBER_OF_DECIMALS = 5;
 
 const MapCenterCoordinates = {
   LAT: 35.681729,
@@ -45,11 +46,22 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
+const setMainMarkerAdress = () => {
+  mainMarker.setLatLng({ lat: MapCenterCoordinates.LAT, lng: MapCenterCoordinates.LNG });
+};
+
 const mapAddress = document.querySelector('#address');
-mapAddress.value = `${MapCenterCoordinates.LAT}, ${MapCenterCoordinates.LNG}`;
+const setMapAdress = () => {
+  mapAddress.value = `${MapCenterCoordinates.LAT.toFixed(NUMBER_OF_DECIMALS)}, ${MapCenterCoordinates.LNG.toFixed(NUMBER_OF_DECIMALS)}`;
+};
+setMapAdress();
+
+const getMainMarkerAdress = (address) => {
+  mapAddress.value = `${address.lat.toFixed(NUMBER_OF_DECIMALS)}, ${address.lng.toFixed(NUMBER_OF_DECIMALS)}`;
+};
 
 mainMarker.on('moveend', (evt) => {
-  mapAddress.value = `${evt.target.getLatLng().lat.toFixed(NUMBER_OF_DECIMALS)}, ${evt.target.getLatLng().lng.toFixed(NUMBER_OF_DECIMALS)}`;
+  getMainMarkerAdress(evt.target.getLatLng());
 });
 
 const generalIcon = L.icon({
@@ -75,19 +87,21 @@ const renderMarkers = (adverts) => {
   });
 };
 
-const resetPage = () => {
-  adForm.reset();
-  mapFilters.reset();
-  mainMarker.setLatLng({ lat: MapCenterCoordinates.LAT, lng: MapCenterCoordinates.LNG });
-  mapAddress.value = `${MapCenterCoordinates.LAT}, ${MapCenterCoordinates.LNG}`;
-  map.closePopup();
+const removeMarkers = () => {
+  markers.forEach((marker) => {
+    map.removeLayer(marker);
+  });
 };
 
-const resetButton = document.querySelector('.ad-form__reset');
-resetButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  resetPage();
-});
+const resetPage = (adverts) => {
+  adForm.reset();
+  mapFilters.reset();
+  setMainMarkerAdress();
+  setMapAdress();
+  map.closePopup();
+  removeMarkers();
+  renderMarkers(adverts.slice(0, ADVERT_COUNT));
+};
 
 map
   .on('load', () => {
@@ -102,10 +116,4 @@ map
     MAP_SCALE,
   );
 
-const removeMarkers = () => {
-  markers.forEach((marker) => {
-    map.removeLayer(marker);
-  });
-};
-
-export { renderMarkers, resetPage, map, removeMarkers, mapFilters };
+export { renderMarkers, resetPage, map, removeMarkers, adForm, mapFilters, setMainMarkerAdress, setMapAdress };
