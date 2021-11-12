@@ -10,7 +10,7 @@ const MAP_ATTRIBUTION = {
 };
 const MAIN_MARKER_IMAGE = './img/main-pin.svg';
 const GENERAL_MARKER_IMAGE = './img/pin.svg';
-const NUMBER_OF_DECIMALS = 5;
+const NUMBER_OF_DECIMALS = 4;
 
 const MapCenterCoordinates = {
   LAT: 35.681729,
@@ -102,10 +102,10 @@ map
     MAP_SCALE,
   );
 
-const deleteMarkers = () => {
+const removeMarkers = () => {
   markers.forEach((marker) => {
     map.removeLayer(marker);
   });
 };
 
-export { renderMarkers, resetPage, map, deleteMarkers, mapFilters };
+export { renderMarkers, resetPage, map, removeMarkers, mapFilters };

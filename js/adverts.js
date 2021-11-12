@@ -87,9 +87,9 @@ const fillPopupDescription = (markupElement, attribute, data) => {
 
 const fillPopupAvatar = (markupElement, attribute, data) => {
   if (data) {
-    markupElement.querySelector(attribute).remove();
-  } else {
     markupElement.querySelector(attribute).src = data;
+  } else {
+    markupElement.querySelector(attribute).remove();
   }
 };
 
