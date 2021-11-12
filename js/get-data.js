@@ -139,43 +139,70 @@ const setMapFiltersClick = (adverts) => {
     };
 
     console.log(adverts);
+    //Объявляем пустой массив, который потом будем заполнять теми элементами, которые прошли проверку и отрисовывать
+    const newFiltered = [];
 
-    //Написать две функции
-    // Первая функция проверяет по условию элементы переданного ей массива данных
-    //Написать функцию
-    //Написать условие проверки элементов
-    const checkCondition = () => {};
+    // Функция с циклом. Цикл добавляет в переданный в функцию массив элементы, прошедшие проверку
+    const createFilteredArray = (newArray, item) => {
+      newArray.push(item);
+      return newArray;
+    };
 
-    // Вторая функция с циклом. Цикл добавляет в переданный в функцию массив элементы, прошедшие проверку
-    //
-    if (evtFilterID === Filters.PRICE) {
-      for (let i = 0; i <= adverts.length - 1; i++) {
-        const isPriceSimillar = getPrice(selectedPrice, adverts[i].offer.price);
-        if (isPriceSimillar || isPriceSimillar === 'any') {
-          newFiltered.push(adverts[i]);
+    // Написать несколько проверок
+    // Каждый if проверяет id события с опцией фильтра из массива
+    //     Если совпадают идёт проверка элементов массива adverts на совпадение условия
+    //     Проверяется каждый элемень массива на похожесть
+    //     Если элемент похож, то элемент записывается в массив newFiltered
+
+    if (evtFilterID === Filters.HOUSING) {
+      adverts.forEach((advert) => {
+        const isSimillar = getType(selectedType, advert.offer.type);
+        if (isSimillar || isSimillar === 'any') {
+          createFilteredArray(newFiltered, advert);
         }
-      }
-      console.log(newFiltered);
+      });
+    }
+
+    if (evtFilterID === Filters.PRICE) {
+      adverts.forEach((advert) => {
+        const isSimillar = getPrice(selectedPrice, advert.offer.price);
+        if (isSimillar || isSimillar === 'any') {
+          createFilteredArray(newFiltered, advert);
+        }
+      });
     }
 
     if (evtFilterID === Filters.ROOMS) {
-      for (let i = 0; i <= adverts.length - 1; i++) {
-        const isRoomsSimillar = getCapacity(selectedRooms, adverts[i].offer.rooms);
-        if (isRoomsSimillar || isRoomsSimillar === 'any') {
-          newFiltered.push(adverts[i]);
+      adverts.forEach((advert) => {
+        const isSimillar = getCapacity(selectedRooms, advert.offer.rooms);
+        if (isSimillar || isSimillar === 'any') {
+          createFilteredArray(newFiltered, advert);
         }
-      }
-      console.log(newFiltered);
+      });
     }
 
     if (evtFilterID === Filters.GUESTS) {
-      for (let i = 0; i <= adverts.length - 1; i++) {
-        const isGuestsSimillar = getCapacity(selectedGuests, adverts[i].offer.guests);
-        if (isGuestsSimillar || isGuestsSimillar === 'any') {
-          newFiltered.push(adverts[i]);
+      adverts.forEach((advert) => {
+        const isSimillar = getCapacity(selectedGuests, advert.offer.guests);
+        if (isSimillar || isSimillar === 'any') {
+          createFilteredArray(newFiltered, advert);
         }
-      }
-      console.log(newFiltered);
+      });
+    }
+
+    if (evtFilterID === Filters.DISHWASHER) {
+    }
+
+    if (evtFilterID === Filters.PARKING) {
+    }
+
+    if (evtFilterID === Filters.WASHER) {
+    }
+
+    if (evtFilterID === Filters.ELEVATOR) {
+    }
+
+    if (evtFilterID === Filters.CONDITIONER) {
     }
 
     deleteMarkers();
@@ -187,7 +214,7 @@ const setMapFiltersClick = (adverts) => {
       .slice()
       .sort(compareAdverts);
 
-    const filterAdverts = debounce(() => renderMarkers(filteredAdverts.slice(0, ADVERT_COUNT)));
+    const filterAdverts = debounce(() => renderMarkers(newFiltered.slice(0, ADVERT_COUNT)));
     filterAdverts();
   });
 };
