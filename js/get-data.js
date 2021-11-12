@@ -4,6 +4,12 @@ import { debounce } from './utils/debounce.js';
 const ADVERT_COUNT = 10;
 const ALERT_SHOW_TIME = 3000;
 
+const Price = {
+  LOW: 'low',
+  MIDDLE: 'middle',
+  HIGH: 'high',
+};
+
 const onDownloadError = () => {
   const alertContainer = document.createElement('div');
   alertContainer.style.position = 'absolute';
@@ -36,7 +42,7 @@ const filterElevator = document.querySelector('#filter-elevator');
 const filterConditioner = document.querySelector('#filter-conditioner');
 
 const setMapFiltersClick = (adverts) => {
-  mapFilters.addEventListener('change', () => {
+  mapFilters.addEventListener('change', (evt) => {
     const selectedType = housingType.value;
     const selectedPrice = housingPrice.value;
     const selectedRooms = housingRooms.value;
@@ -99,11 +105,11 @@ const setMapFiltersClick = (adverts) => {
       switch (option) {
         case 'any':
           return price;
-        case 'low':
+        case Price.LOW:
           return price < 10000;
-        case 'middle':
+        case Price.MIDDLE:
           return price > 10000 && price < 50000;
-        case 'high':
+        case Price.HIGH:
           return price > 50000;
       }
     };
@@ -116,6 +122,61 @@ const setMapFiltersClick = (adverts) => {
           return items === Number(option);
       }
     };
+    //Найти элемент, на котором произошёл клик. evt.target.id
+    const evtFilterID = evt.target.id;
+    //Записать в enum-объект типы изменений
+    const Filters = {
+      HOUSING: 'housing-type',
+      PRICE: 'housing-price',
+      ROOMS: 'housing-rooms',
+      GUESTS: 'housing-guests',
+      WIFI: 'filter-wifi',
+      DISHWASHER: 'filter-dishwasher',
+      PARKING: 'filter-parking',
+      WASHER: 'filter-washer',
+      ELEVATOR: 'filter-elevator',
+      CONDITIONER: 'filter-conditioner',
+    };
+
+    console.log(adverts);
+
+    //Написать две функции
+    // Первая функция проверяет по условию элементы переданного ей массива данных
+    //Написать функцию
+    //Написать условие проверки элементов
+    const checkCondition = () => {};
+
+    // Вторая функция с циклом. Цикл добавляет в переданный в функцию массив элементы, прошедшие проверку
+    //
+    if (evtFilterID === Filters.PRICE) {
+      for (let i = 0; i <= adverts.length - 1; i++) {
+        const isPriceSimillar = getPrice(selectedPrice, adverts[i].offer.price);
+        if (isPriceSimillar || isPriceSimillar === 'any') {
+          newFiltered.push(adverts[i]);
+        }
+      }
+      console.log(newFiltered);
+    }
+
+    if (evtFilterID === Filters.ROOMS) {
+      for (let i = 0; i <= adverts.length - 1; i++) {
+        const isRoomsSimillar = getCapacity(selectedRooms, adverts[i].offer.rooms);
+        if (isRoomsSimillar || isRoomsSimillar === 'any') {
+          newFiltered.push(adverts[i]);
+        }
+      }
+      console.log(newFiltered);
+    }
+
+    if (evtFilterID === Filters.GUESTS) {
+      for (let i = 0; i <= adverts.length - 1; i++) {
+        const isGuestsSimillar = getCapacity(selectedGuests, adverts[i].offer.guests);
+        if (isGuestsSimillar || isGuestsSimillar === 'any') {
+          newFiltered.push(adverts[i]);
+        }
+      }
+      console.log(newFiltered);
+    }
 
     deleteMarkers();
     const filteredAdverts = adverts
@@ -130,6 +191,7 @@ const setMapFiltersClick = (adverts) => {
     filterAdverts();
   });
 };
+
 let ads = [];
 const onDownloadSuccess = (data) => {
   ads = data.slice();
