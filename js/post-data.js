@@ -18,16 +18,22 @@ const exitPageClick = (element) => {
   });
 };
 
-const showUploadSuccessAlert = () => {
-  const successAlert = document.querySelector('#success').content.querySelector('.success');
+const successAlert = document.querySelector('#success').content.querySelector('.success');
+const errorAlert = document.querySelector('#error').content.querySelector('.error');
+
+const showSuccessAlert = () => {
   document.body.append(successAlert);
 
   exitEscKeyDown(successAlert);
   exitPageClick(successAlert);
 };
 
+const onUploadSuccess = () => {
+  resetPage();
+  showSuccessAlert();
+};
+
 const onUploadError = () => {
-  const errorAlert = document.querySelector('#error').content.querySelector('.error');
   document.body.append(errorAlert);
 
   exitEscKeyDown(errorAlert);
@@ -40,18 +46,9 @@ const onUploadError = () => {
   });
 };
 
-const onUploadSuccess = () => {
-  resetPage();
-  showUploadSuccessAlert();
-};
+adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
 
-const sendData = () => {
-  adForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    const formData = new FormData(evt.target);
-    request(onUploadSuccess, onUploadError, 'POST', formData);
-  });
-};
-
-sendData();
+  const formData = new FormData(evt.target);
+  request(onUploadSuccess, onUploadError, 'POST', formData);
+});
