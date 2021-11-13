@@ -29,8 +29,8 @@ const showSuccessAlert = () => {
 };
 
 const onUploadSuccess = () => {
-  resetPage();
   showSuccessAlert();
+  resetPage();
 };
 
 const onUploadError = () => {

@@ -46,7 +46,7 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
-const setMainMarkerAdress = () => {
+const setMainMarkerAddress = () => {
   mainMarker.setLatLng({ lat: MapCenterCoordinates.LAT, lng: MapCenterCoordinates.LNG });
 };
 
@@ -96,7 +96,7 @@ const removeMarkers = () => {
 const resetPage = (adverts) => {
   adForm.reset();
   mapFilters.reset();
-  setMainMarkerAdress();
+  setMainMarkerAddress();
   setMapAdress();
   map.closePopup();
   removeMarkers();
@@ -116,4 +116,4 @@ map
     MAP_SCALE,
   );
 
-export { renderMarkers, resetPage, map, removeMarkers, adForm, mapFilters, setMainMarkerAdress, setMapAdress };
+export { renderMarkers, resetPage, map, removeMarkers, adForm, mapFilters, setMainMarkerAddress as setMainMarkerAdress, setMapAdress };

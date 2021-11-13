@@ -2,6 +2,16 @@ const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const disabledFields = document.querySelectorAll('fieldset, select.map__filter');
 
+const BorderColor = {
+  DEFAULT: 'rgb(217, 217, 211)',
+  ERROR: 'red',
+};
+
+const TitleLength = {
+  MIN: 30,
+  MAX: 50,
+};
+
 const setDisabledState = () => {
   disabledFields.forEach((element) => {
     element.disabled = !element.disabled;
@@ -48,9 +58,54 @@ const onRoomNumberChange = () => {
 
 roomNumber.addEventListener('change', onRoomNumberChange);
 
-const houseType = document.querySelector('#type');
 const housePrice = document.querySelector('#price');
+const houseTitle = document.querySelector('#title');
 
+const onAdvertTitleInput = () => {
+  const titleLength = houseTitle.value.length;
+
+  if (titleLength === 0) {
+    houseTitle.style.borderColor = BorderColor.ERROR;
+    houseTitle.setCustomValidity('Это обязательное поле!');
+  } else if (titleLength < TitleLength.MIN) {
+    houseTitle.style.borderColor = BorderColor.ERROR;
+    houseTitle.setCustomValidity(`Минимальная длина символов ${houseTitle.minLength}.
+    Осталось ${houseTitle.minLength - titleLength}.`);
+  } else if (titleLength > TitleLength.MAX) {
+    houseTitle.style.borderColor = BorderColor.ERROR;
+    houseTitle.setCustomValidity(`Длина не должна быть больше ${houseTitle.maxLength}`);
+  } else {
+    houseTitle.setCustomValidity('');
+    houseTitle.style.borderColor = BorderColor.DEFAULT;
+  }
+  houseTitle.reportValidity();
+};
+
+houseTitle.addEventListener('input', onAdvertTitleInput);
+
+const onAdvertPriceInput = () => {
+  let priceValue = 0;
+  priceValue = housePrice.value;
+
+  if (priceValue === 0) {
+    housePrice.style.borderColor = BorderColor.ERROR;
+    housePrice.setCustomValidity('Это обязательное поле)))))');
+  } else if (priceValue < Number(housePrice.min)) {
+    housePrice.style.borderColor = BorderColor.ERROR;
+    housePrice.setCustomValidity(`Минимальная цена ${housePrice.min}`);
+  } else if (priceValue > Number(housePrice.max)) {
+    housePrice.style.borderColor = BorderColor.ERROR;
+    housePrice.setCustomValidity(`Цена не должна быть больше${housePrice.max}`);
+  } else {
+    housePrice.setCustomValidity('');
+    housePrice.style.borderColor = BorderColor.DEFAULT;
+  }
+  housePrice.reportValidity();
+};
+
+housePrice.addEventListener('input', onAdvertPriceInput);
+
+const houseType = document.querySelector('#type');
 const typeOfHouse = {
   bungalow: '0',
   flat: '1000',
