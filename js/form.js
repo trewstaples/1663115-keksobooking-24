@@ -61,7 +61,7 @@ roomNumber.addEventListener('change', onRoomNumberChange);
 const housePrice = document.querySelector('#price');
 const houseTitle = document.querySelector('#title');
 
-const onAdvertTitleInput = () => {
+const onHouseTitleInput = () => {
   const titleLength = houseTitle.value.length;
 
   if (titleLength === 0) {
@@ -81,9 +81,9 @@ const onAdvertTitleInput = () => {
   houseTitle.reportValidity();
 };
 
-houseTitle.addEventListener('input', onAdvertTitleInput);
+houseTitle.addEventListener('input', onHouseTitleInput);
 
-const onAdvertPriceInput = () => {
+const onHousePriceInput = () => {
   let priceValue = 0;
   priceValue = housePrice.value;
 
@@ -103,9 +103,10 @@ const onAdvertPriceInput = () => {
   housePrice.reportValidity();
 };
 
-housePrice.addEventListener('input', onAdvertPriceInput);
+housePrice.addEventListener('input', onHousePriceInput);
 
 const houseType = document.querySelector('#type');
+
 const typeOfHouse = {
   bungalow: '0',
   flat: '1000',

@@ -1,4 +1,5 @@
-const MAX_ADVERTS = 10;
+import { ADVERT_COUNT } from './map.js';
+
 const DEFAULT_VALUE = 'any';
 
 const priceMap = {
@@ -45,7 +46,7 @@ const filterData = (data) => {
   let i = 0;
   let result;
 
-  while (i < data.length && filteredAdverts.length < MAX_ADVERTS) {
+  while (i < data.length && filteredAdverts.length < ADVERT_COUNT) {
     result = filters.every((filter) => (filter.value === DEFAULT_VALUE ? true : filterRules[filter.id](data[i], filter)));
 
     if (result) {

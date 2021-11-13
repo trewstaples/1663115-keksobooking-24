@@ -1,42 +1,44 @@
 import { togglePageState, adForm, mapFilters } from './form.js';
 import { createAdvert } from './adverts.js';
-import { onDownloadError, onDownloadSuccess } from './get-data.js';
+import { debounce } from './debounce.js';
+import { filterData } from './filter.js';
 import { request } from './request.js';
+import { setUserFormSubmit } from './post-data.js';
 
 const ADVERT_COUNT = 10;
-const MAP_SCALE = 10;
-const MAP_ADDRESS = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const MAP_ATTRIBUTION = {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-};
-const MAIN_MARKER_IMAGE = './img/main-pin.svg';
-const GENERAL_MARKER_IMAGE = './img/pin.svg';
-const NUMBER_OF_DECIMALS = 5;
+const DECIMALS_NUMBER = 5;
+const ALERT_SHOW_TIME = 3000;
 
-const MapCenterCoordinates = {
+const Map = {
+  SCALE: 10,
+  ADDRESS: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  ATTRIBUTION: {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  },
   LAT: 35.681729,
   LNG: 139.753927,
 };
 
-const MarkerSizes = {
+const Marker = {
+  MAIN_IMAGE: './img/main-pin.svg',
+  GENERAL_IMAGE: './img/pin.svg',
   WIDTH: 52,
   HEIGHT: 52,
 };
 
 const map = L.map('map-canvas');
-
-L.tileLayer(MAP_ADDRESS, MAP_ATTRIBUTION).addTo(map);
+L.tileLayer(Map.ADDRESS, Map.ATTRIBUTION).addTo(map);
 
 const mainIcon = L.icon({
-  iconUrl: MAIN_MARKER_IMAGE,
-  iconSize: [MarkerSizes.WIDTH, MarkerSizes.HEIGHT],
-  iconAnchor: [MarkerSizes.WIDTH / 2, MarkerSizes.HEIGHT],
+  iconUrl: Marker.MAIN_IMAGE,
+  iconSize: [Marker.WIDTH, Marker.HEIGHT],
+  iconAnchor: [Marker.WIDTH / 2, Marker.HEIGHT],
 });
 
 const mainMarker = L.marker(
   {
-    lat: MapCenterCoordinates.LAT,
-    lng: MapCenterCoordinates.LNG,
+    lat: Map.LAT,
+    lng: Map.LNG,
   },
   {
     draggable: true,
@@ -47,27 +49,28 @@ const mainMarker = L.marker(
 mainMarker.addTo(map);
 
 const setMainMarkerAddress = () => {
-  mainMarker.setLatLng({ lat: MapCenterCoordinates.LAT, lng: MapCenterCoordinates.LNG });
+  mainMarker.setLatLng({ lat: Map.LAT, lng: Map.LNG });
 };
+setMainMarkerAddress();
 
 const mapAddress = document.querySelector('#address');
-const setMapAdress = () => {
-  mapAddress.value = `${MapCenterCoordinates.LAT.toFixed(NUMBER_OF_DECIMALS)}, ${MapCenterCoordinates.LNG.toFixed(NUMBER_OF_DECIMALS)}`;
+const setMapAddress = () => {
+  mapAddress.value = `${Map.LAT.toFixed(DECIMALS_NUMBER)}, ${Map.LNG.toFixed(DECIMALS_NUMBER)}`;
 };
-setMapAdress();
+setMapAddress();
 
-const getMainMarkerAdress = (address) => {
-  mapAddress.value = `${address.lat.toFixed(NUMBER_OF_DECIMALS)}, ${address.lng.toFixed(NUMBER_OF_DECIMALS)}`;
+const getMainMarkerAddress = (address) => {
+  mapAddress.value = `${address.lat.toFixed(DECIMALS_NUMBER)}, ${address.lng.toFixed(DECIMALS_NUMBER)}`;
 };
 
 mainMarker.on('moveend', (evt) => {
-  getMainMarkerAdress(evt.target.getLatLng());
+  getMainMarkerAddress(evt.target.getLatLng());
 });
 
 const generalIcon = L.icon({
-  iconUrl: GENERAL_MARKER_IMAGE,
-  iconSize: [MarkerSizes.WIDTH, MarkerSizes.HEIGHT],
-  iconAnchor: [MarkerSizes.WIDTH / 2, MarkerSizes.HEIGHT],
+  iconUrl: Marker.GENERAL_IMAGE,
+  iconSize: [Marker.WIDTH, Marker.HEIGHT],
+  iconAnchor: [Marker.WIDTH / 2, Marker.HEIGHT],
 });
 
 const markers = [];
@@ -97,10 +100,52 @@ const resetPage = (adverts) => {
   adForm.reset();
   mapFilters.reset();
   setMainMarkerAddress();
-  setMapAdress();
+  setMapAddress();
   map.closePopup();
   removeMarkers();
   renderMarkers(adverts.slice(0, ADVERT_COUNT));
+};
+
+const onDownloadError = () => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = 0;
+  alertContainer.style.top = 0;
+  alertContainer.style.right = 0;
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '25px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+
+  alertContainer.textContent = 'Ошибка. Данные не удалось загрузить :(';
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+let ads = [];
+
+const onMapFiltersChange = debounce(() => {
+  removeMarkers();
+  renderMarkers(filterData(ads));
+});
+
+const onDownloadSuccess = (data) => {
+  ads = data.slice();
+
+  renderMarkers(ads.slice(0, ADVERT_COUNT));
+
+  mapFilters.addEventListener('change', onMapFiltersChange);
+  setUserFormSubmit();
+
+  const resetButton = document.querySelector('.ad-form__reset');
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetPage(ads);
+  });
 };
 
 map
@@ -110,10 +155,10 @@ map
   })
   .setView(
     {
-      lat: MapCenterCoordinates.LAT,
-      lng: MapCenterCoordinates.LNG,
+      lat: Map.LAT,
+      lng: Map.LNG,
     },
-    MAP_SCALE,
+    Map.SCALE,
   );
 
-export { renderMarkers, resetPage, map, removeMarkers, adForm, mapFilters, setMainMarkerAddress as setMainMarkerAdress, setMapAdress };
+export { ADVERT_COUNT, resetPage, renderMarkers };

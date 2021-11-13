@@ -1,3 +1,11 @@
+const offerTypes = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец',
+  hotel: 'Отель',
+};
+
 const advertsTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const fillTitle = (markupElement, attribute, data) => {
@@ -30,14 +38,6 @@ const fillType = (markupElement, attribute, data, type) => {
   } else {
     markupElement.querySelector(attribute).remove();
   }
-};
-
-const offerTypes = {
-  flat: 'Квартира',
-  bungalow: 'Бунгало',
-  house: 'Дом',
-  palace: 'Дворец',
-  hotel: 'Отель',
 };
 
 const getOfferType = (type) => offerTypes[type];

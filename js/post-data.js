@@ -46,9 +46,13 @@ const onUploadError = () => {
   });
 };
 
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+const setUserFormSubmit = () => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
 
-  const formData = new FormData(evt.target);
-  request(onUploadSuccess, onUploadError, 'POST', formData);
-});
+    const formData = new FormData(evt.target);
+    request(onUploadSuccess, onUploadError, 'POST', formData);
+  });
+};
+
+export { setUserFormSubmit };
