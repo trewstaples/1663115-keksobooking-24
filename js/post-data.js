@@ -46,13 +46,10 @@ const onUploadError = () => {
   });
 };
 
-const setUserFormSubmit = () => {
-  adForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
+const buttonSubmit = document.querySelector('.ad-form__submit');
 
-    const formData = new FormData(evt.target);
-    request(onUploadSuccess, onUploadError, 'POST', formData);
-  });
-};
+buttonSubmit.addEventListener('click', (evt) => {
+  evt.preventDefault();
 
-export { setUserFormSubmit };
+  request(onUploadSuccess, onUploadError, 'POST', new FormData(adForm));
+});

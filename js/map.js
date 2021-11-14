@@ -3,7 +3,6 @@ import { createAdvert } from './adverts.js';
 import { debounce } from './debounce.js';
 import { filterData } from './filter.js';
 import { request } from './request.js';
-import { setUserFormSubmit } from './post-data.js';
 
 const ADVERT_COUNT = 10;
 const DECIMALS_NUMBER = 5;
@@ -96,16 +95,6 @@ const removeMarkers = () => {
   });
 };
 
-const resetPage = (adverts) => {
-  adForm.reset();
-  mapFilters.reset();
-  setMainMarkerAddress();
-  setMapAddress();
-  map.closePopup();
-  removeMarkers();
-  renderMarkers(adverts.slice(0, ADVERT_COUNT));
-};
-
 const onDownloadError = () => {
   const alertContainer = document.createElement('div');
   alertContainer.style.position = 'absolute';
@@ -133,13 +122,21 @@ const onMapFiltersChange = debounce(() => {
   renderMarkers(filterData(ads));
 });
 
+const resetPage = () => {
+  adForm.reset();
+  mapFilters.reset();
+  setMainMarkerAddress();
+  setMapAddress();
+  map.closePopup();
+  onMapFiltersChange();
+};
+
 const onDownloadSuccess = (data) => {
   ads = data.slice();
 
   renderMarkers(ads.slice(0, ADVERT_COUNT));
 
   mapFilters.addEventListener('change', onMapFiltersChange);
-  setUserFormSubmit();
 
   const resetButton = document.querySelector('.ad-form__reset');
   resetButton.addEventListener('click', (evt) => {
