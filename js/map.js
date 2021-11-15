@@ -115,11 +115,11 @@ const onDownloadError = () => {
   }, ALERT_SHOW_TIME);
 };
 
-let ads = [];
+let offers = [];
 
 const onMapFiltersChange = debounce(() => {
   removeMarkers();
-  renderMarkers(filterData(ads));
+  renderMarkers(filterData(offers));
 });
 
 const resetPage = () => {
@@ -132,16 +132,16 @@ const resetPage = () => {
 };
 
 const onDownloadSuccess = (data) => {
-  ads = data.slice();
+  offers = data.slice();
 
-  renderMarkers(ads.slice(0, ADVERT_COUNT));
+  renderMarkers(offers.slice(0, ADVERT_COUNT));
 
   mapFilters.addEventListener('change', onMapFiltersChange);
 
   const resetButton = document.querySelector('.ad-form__reset');
   resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-    resetPage(ads);
+    resetPage(offers);
   });
 };
 
@@ -158,4 +158,4 @@ map
     Map.SCALE,
   );
 
-export { ADVERT_COUNT, resetPage, renderMarkers };
+export { ADVERT_COUNT, resetPage };

@@ -1,4 +1,4 @@
-import { adForm, isTitleValid, isPriceValid, onHouseTitleInput, onHousePriceInput } from './form.js';
+import { adForm, onHouseTitleInput, onHousePriceInput, houseTitle, housePrice, checkDefaultState } from './form.js';
 import { request } from './request.js';
 import { resetPage } from './map.js';
 
@@ -52,7 +52,7 @@ buttonSubmit.addEventListener('click', (evt) => {
   evt.preventDefault();
   onHouseTitleInput();
   onHousePriceInput();
-  if (isTitleValid && isPriceValid) {
+  if (checkDefaultState(houseTitle) && checkDefaultState(housePrice)) {
     request(onUploadSuccess, onUploadError, 'POST', new FormData(adForm));
   }
 });

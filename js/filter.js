@@ -2,7 +2,7 @@ import { ADVERT_COUNT } from './map.js';
 
 const DEFAULT_VALUE = 'any';
 
-const priceMap = {
+const mapPrice = {
   low: {
     start: 0,
     end: 10000,
@@ -22,7 +22,7 @@ const filters = Array.from(document.querySelector('.map__filters').children);
 const filterRules = {
   'housing-type': (data, filter) => filter.value === data.offer.type,
 
-  'housing-price': (data, filter) => data.offer.price >= priceMap[filter.value].start && data.offer.price < priceMap[filter.value].end,
+  'housing-price': (data, filter) => data.offer.price >= mapPrice[filter.value].start && data.offer.price < mapPrice[filter.value].end,
 
   'housing-rooms': (data, filter) => filter.value === data.offer.rooms.toString(),
 

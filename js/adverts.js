@@ -1,11 +1,3 @@
-const offerTypes = {
-  flat: 'Квартира',
-  bungalow: 'Бунгало',
-  house: 'Дом',
-  palace: 'Дворец',
-  hotel: 'Отель',
-};
-
 const advertsTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const fillTitle = (markupElement, attribute, data) => {
@@ -16,7 +8,7 @@ const fillTitle = (markupElement, attribute, data) => {
   }
 };
 
-const fillAdress = (markupElement, attribute, data) => {
+const fillAddress = (markupElement, attribute, data) => {
   if (data) {
     markupElement.querySelector(attribute).textContent = data;
   } else {
@@ -38,6 +30,14 @@ const fillType = (markupElement, attribute, data, type) => {
   } else {
     markupElement.querySelector(attribute).remove();
   }
+};
+
+const offerTypes = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец',
+  hotel: 'Отель',
 };
 
 const getOfferType = (type) => offerTypes[type];
@@ -116,7 +116,7 @@ const createAdvert = (advert) => {
   const newAdvert = advertsTemplate.cloneNode(true);
 
   fillTitle(newAdvert, '.popup__title', offer.title);
-  fillAdress(newAdvert, '.popup__text--address', offer.address);
+  fillAddress(newAdvert, '.popup__text--address', offer.address);
   fillPrice(newAdvert, '.popup__text--price', offer.price);
   fillType(newAdvert, '.popup__type', offer.type, getOfferType(offer.type));
   fillTextCapacity(newAdvert, '.popup__text--capacity', offer.rooms, offer.guests);

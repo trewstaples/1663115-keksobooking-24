@@ -1,8 +1,3 @@
-// import { setButtonSubmit } from './post-data';
-const adForm = document.querySelector('.ad-form');
-const mapFilters = document.querySelector('.map__filters');
-const disabledFields = document.querySelectorAll('fieldset, select.map__filter');
-
 const BorderColor = {
   DEFAULT: 'rgb(217, 217, 211)',
   ERROR: 'red',
@@ -17,6 +12,10 @@ const TitleLength = {
   MIN: 30,
   MAX: 50,
 };
+
+const adForm = document.querySelector('.ad-form');
+const mapFilters = document.querySelector('.map__filters');
+const disabledFields = document.querySelectorAll('fieldset, select.map__filter');
 
 const setDisabledState = () => {
   disabledFields.forEach((element) => {
@@ -66,8 +65,6 @@ roomNumber.addEventListener('change', onRoomNumberChange);
 
 const houseTitle = document.querySelector('#title');
 const housePrice = document.querySelector('#price');
-let isTitleValid = false;
-let isPriceValid = false;
 
 const setErrorState = (element) => {
   element.style.borderColor = BorderColor.ERROR;
@@ -77,6 +74,12 @@ const setErrorState = (element) => {
 const setDefaultState = (element) => {
   element.style.borderColor = BorderColor.DEFAULT;
   element.style.borderWidth = BorderWidth.DEFAULT;
+};
+
+const checkDefaultState = (element) => {
+  if (element.style.borderColor === BorderColor.DEFAULT) {
+    return true;
+  }
 };
 
 const onHouseTitleInput = () => {
@@ -95,7 +98,6 @@ const onHouseTitleInput = () => {
   } else {
     houseTitle.setCustomValidity('');
     setDefaultState(houseTitle);
-    isTitleValid = true;
   }
   houseTitle.reportValidity();
 };
@@ -108,32 +110,21 @@ const onHousePriceInput = () => {
 
   if (priceValue === 0) {
     setErrorState(housePrice);
-    setErrorState(housePrice);
     housePrice.setCustomValidity('Это обязательное поле)))))');
   } else if (priceValue < Number(housePrice.min)) {
     setErrorState(housePrice);
-    setErrorState(housePrice);
     housePrice.setCustomValidity(`Минимальная цена ${housePrice.min}`);
   } else if (priceValue > Number(housePrice.max)) {
-    setErrorState(housePrice);
     setErrorState(housePrice);
     housePrice.setCustomValidity(`Цена не должна быть больше${housePrice.max}`);
   } else {
     housePrice.setCustomValidity('');
     setDefaultState(housePrice);
-    setDefaultState(housePrice);
-    isPriceValid = true;
   }
   housePrice.reportValidity();
 };
 
 housePrice.addEventListener('input', onHousePriceInput);
-
-const onButtonSubmitClick = (submitData) => {
-  if (isTitleValid && isPriceValid) {
-    return submitData();
-  }
-};
 
 const houseType = document.querySelector('#type');
 
@@ -168,4 +159,4 @@ timeForm.addEventListener('change', (evt) => {
   timeOut.value = evt.target.value;
 });
 
-export { togglePageState, adForm, mapFilters, onButtonSubmitClick, isTitleValid, isPriceValid, onHouseTitleInput, onHousePriceInput };
+export { togglePageState, adForm, mapFilters, onHouseTitleInput, onHousePriceInput, houseTitle, housePrice, checkDefaultState };
