@@ -128,7 +128,7 @@ housePrice.addEventListener('input', onHousePriceInput);
 
 const houseType = document.querySelector('#type');
 
-const typeOfHouse = {
+const minHousePrice = {
   bungalow: '0',
   flat: '1000',
   hotel: '3000',
@@ -138,7 +138,7 @@ const typeOfHouse = {
 
 const validatePrice = () => {
   const typeValue = houseType.value;
-  const minPrice = typeOfHouse[typeValue];
+  const minPrice = minHousePrice[typeValue];
 
   housePrice.min = minPrice;
   housePrice.placeholder = minPrice;
@@ -159,4 +159,4 @@ timeForm.addEventListener('change', (evt) => {
   timeOut.value = evt.target.value;
 });
 
-export { togglePageState, adForm, mapFilters, onHouseTitleInput, onHousePriceInput, houseTitle, housePrice, checkDefaultState };
+export { togglePageState, adForm, mapFilters, onHouseTitleInput, onHousePriceInput, houseTitle, housePrice, minHousePrice, checkDefaultState };

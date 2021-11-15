@@ -1,4 +1,4 @@
-import { togglePageState, adForm, mapFilters } from './form.js';
+import { togglePageState, adForm, mapFilters, minHousePrice } from './form.js';
 import { createAdvert } from './adverts.js';
 import { debounce } from './debounce.js';
 import { filterData } from './filter.js';
@@ -122,9 +122,12 @@ const onMapFiltersChange = debounce(() => {
   renderMarkers(filterData(offers));
 });
 
+const inputPrice = adForm.querySelector('#price');
 const resetPage = () => {
   adForm.reset();
   mapFilters.reset();
+  inputPrice.placeholder = minHousePrice.flat;
+  inputPrice.min = minHousePrice.flat;
   setMainMarkerAddress();
   setMapAddress();
   map.closePopup();
