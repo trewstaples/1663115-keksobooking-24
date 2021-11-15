@@ -1,3 +1,4 @@
+// import { setButtonSubmit } from './post-data';
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const disabledFields = document.querySelectorAll('fieldset, select.map__filter');
@@ -5,6 +6,11 @@ const disabledFields = document.querySelectorAll('fieldset, select.map__filter')
 const BorderColor = {
   DEFAULT: 'rgb(217, 217, 211)',
   ERROR: 'red',
+};
+
+const BorderWidth = {
+  DEFAULT: '1px',
+  ERROR: '5px',
 };
 
 const TitleLength = {
@@ -58,25 +64,38 @@ const onRoomNumberChange = () => {
 
 roomNumber.addEventListener('change', onRoomNumberChange);
 
-const housePrice = document.querySelector('#price');
 const houseTitle = document.querySelector('#title');
+const housePrice = document.querySelector('#price');
+let isTitleValid = false;
+let isPriceValid = false;
+
+const setErrorState = (element) => {
+  element.style.borderColor = BorderColor.ERROR;
+  element.style.borderWidth = BorderWidth.ERROR;
+};
+
+const setDefaultState = (element) => {
+  element.style.borderColor = BorderColor.DEFAULT;
+  element.style.borderWidth = BorderWidth.DEFAULT;
+};
 
 const onHouseTitleInput = () => {
   const titleLength = houseTitle.value.length;
 
   if (titleLength === 0) {
-    houseTitle.style.borderColor = BorderColor.ERROR;
+    setErrorState(houseTitle);
     houseTitle.setCustomValidity('Это обязательное поле!');
   } else if (titleLength < TitleLength.MIN) {
-    houseTitle.style.borderColor = BorderColor.ERROR;
+    setErrorState(houseTitle);
     houseTitle.setCustomValidity(`Минимальная длина символов ${houseTitle.minLength}.
     Осталось ${houseTitle.minLength - titleLength}.`);
   } else if (titleLength > TitleLength.MAX) {
-    houseTitle.style.borderColor = BorderColor.ERROR;
+    setErrorState(houseTitle);
     houseTitle.setCustomValidity(`Длина не должна быть больше ${houseTitle.maxLength}`);
   } else {
     houseTitle.setCustomValidity('');
-    houseTitle.style.borderColor = BorderColor.DEFAULT;
+    setDefaultState(houseTitle);
+    isTitleValid = true;
   }
   houseTitle.reportValidity();
 };
@@ -88,22 +107,33 @@ const onHousePriceInput = () => {
   priceValue = housePrice.value;
 
   if (priceValue === 0) {
-    housePrice.style.borderColor = BorderColor.ERROR;
+    setErrorState(housePrice);
+    setErrorState(housePrice);
     housePrice.setCustomValidity('Это обязательное поле)))))');
   } else if (priceValue < Number(housePrice.min)) {
-    housePrice.style.borderColor = BorderColor.ERROR;
+    setErrorState(housePrice);
+    setErrorState(housePrice);
     housePrice.setCustomValidity(`Минимальная цена ${housePrice.min}`);
   } else if (priceValue > Number(housePrice.max)) {
-    housePrice.style.borderColor = BorderColor.ERROR;
+    setErrorState(housePrice);
+    setErrorState(housePrice);
     housePrice.setCustomValidity(`Цена не должна быть больше${housePrice.max}`);
   } else {
     housePrice.setCustomValidity('');
-    housePrice.style.borderColor = BorderColor.DEFAULT;
+    setDefaultState(housePrice);
+    setDefaultState(housePrice);
+    isPriceValid = true;
   }
   housePrice.reportValidity();
 };
 
 housePrice.addEventListener('input', onHousePriceInput);
+
+const onButtonSubmitClick = (submitData) => {
+  if (isTitleValid && isPriceValid) {
+    return submitData();
+  }
+};
 
 const houseType = document.querySelector('#type');
 
@@ -138,4 +168,4 @@ timeForm.addEventListener('change', (evt) => {
   timeOut.value = evt.target.value;
 });
 
-export { togglePageState, adForm, mapFilters };
+export { togglePageState, adForm, mapFilters, onButtonSubmitClick, isTitleValid, isPriceValid, onHouseTitleInput, onHousePriceInput };

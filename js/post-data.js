@@ -1,4 +1,4 @@
-import { adForm } from './form.js';
+import { adForm, isTitleValid, isPriceValid, onHouseTitleInput, onHousePriceInput } from './form.js';
 import { request } from './request.js';
 import { resetPage } from './map.js';
 
@@ -50,6 +50,9 @@ const buttonSubmit = document.querySelector('.ad-form__submit');
 
 buttonSubmit.addEventListener('click', (evt) => {
   evt.preventDefault();
-
-  request(onUploadSuccess, onUploadError, 'POST', new FormData(adForm));
+  onHouseTitleInput();
+  onHousePriceInput();
+  if (isTitleValid && isPriceValid) {
+    request(onUploadSuccess, onUploadError, 'POST', new FormData(adForm));
+  }
 });
