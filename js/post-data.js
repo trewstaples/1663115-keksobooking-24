@@ -1,4 +1,4 @@
-import { adForm } from './form.js';
+import { adForm, onHouseTitleInput, onHousePriceInput, houseTitle, housePrice, checkDefaultState } from './form.js';
 import { request } from './request.js';
 import { resetPage } from './map.js';
 
@@ -18,16 +18,22 @@ const exitPageClick = (element) => {
   });
 };
 
-const showUploadSuccessAlert = () => {
-  const successAlert = document.querySelector('#success').content.querySelector('.success');
+const successAlert = document.querySelector('#success').content.querySelector('.success');
+const errorAlert = document.querySelector('#error').content.querySelector('.error');
+
+const showSuccessAlert = () => {
   document.body.append(successAlert);
 
   exitEscKeyDown(successAlert);
   exitPageClick(successAlert);
 };
 
+const onUploadSuccess = () => {
+  showSuccessAlert();
+  resetPage();
+};
+
 const onUploadError = () => {
-  const errorAlert = document.querySelector('#error').content.querySelector('.error');
   document.body.append(errorAlert);
 
   exitEscKeyDown(errorAlert);
@@ -40,18 +46,13 @@ const onUploadError = () => {
   });
 };
 
-const onUploadSuccess = () => {
-  resetPage();
-  showUploadSuccessAlert();
-};
+const buttonSubmit = document.querySelector('.ad-form__submit');
 
-const sendData = () => {
-  adForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    const formData = new FormData(evt.target);
-    request(onUploadSuccess, onUploadError, 'POST', formData);
-  });
-};
-
-sendData();
+buttonSubmit.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  onHouseTitleInput();
+  onHousePriceInput();
+  if (checkDefaultState(houseTitle) && checkDefaultState(housePrice)) {
+    request(onUploadSuccess, onUploadError, 'POST', new FormData(adForm));
+  }
+});

@@ -1,3 +1,18 @@
+const BorderColor = {
+  DEFAULT: 'rgb(217, 217, 211)',
+  ERROR: 'red',
+};
+
+const BorderWidth = {
+  DEFAULT: '1px',
+  ERROR: '5px',
+};
+
+const TitleLength = {
+  MIN: 30,
+  MAX: 50,
+};
+
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const disabledFields = document.querySelectorAll('fieldset, select.map__filter');
@@ -48,8 +63,70 @@ const onRoomNumberChange = () => {
 
 roomNumber.addEventListener('change', onRoomNumberChange);
 
-const houseType = document.querySelector('#type');
+const houseTitle = document.querySelector('#title');
 const housePrice = document.querySelector('#price');
+
+const setErrorState = (element) => {
+  element.style.borderColor = BorderColor.ERROR;
+  element.style.borderWidth = BorderWidth.ERROR;
+};
+
+const setDefaultState = (element) => {
+  element.style.borderColor = BorderColor.DEFAULT;
+  element.style.borderWidth = BorderWidth.DEFAULT;
+};
+
+const checkDefaultState = (element) => {
+  if (element.style.borderColor === BorderColor.DEFAULT) {
+    return true;
+  }
+};
+
+const onHouseTitleInput = () => {
+  const titleLength = houseTitle.value.length;
+
+  if (titleLength === 0) {
+    setErrorState(houseTitle);
+    houseTitle.setCustomValidity('Это обязательное поле!');
+  } else if (titleLength < TitleLength.MIN) {
+    setErrorState(houseTitle);
+    houseTitle.setCustomValidity(`Минимальная длина символов ${houseTitle.minLength}.
+    Осталось ${houseTitle.minLength - titleLength}.`);
+  } else if (titleLength > TitleLength.MAX) {
+    setErrorState(houseTitle);
+    houseTitle.setCustomValidity(`Длина не должна быть больше ${houseTitle.maxLength}`);
+  } else {
+    houseTitle.setCustomValidity('');
+    setDefaultState(houseTitle);
+  }
+  houseTitle.reportValidity();
+};
+
+houseTitle.addEventListener('input', onHouseTitleInput);
+
+const onHousePriceInput = () => {
+  let priceValue = 0;
+  priceValue = housePrice.value;
+
+  if (priceValue === 0) {
+    setErrorState(housePrice);
+    housePrice.setCustomValidity('Это обязательное поле)))))');
+  } else if (priceValue < Number(housePrice.min)) {
+    setErrorState(housePrice);
+    housePrice.setCustomValidity(`Минимальная цена ${housePrice.min}`);
+  } else if (priceValue > Number(housePrice.max)) {
+    setErrorState(housePrice);
+    housePrice.setCustomValidity(`Цена не должна быть больше${housePrice.max}`);
+  } else {
+    housePrice.setCustomValidity('');
+    setDefaultState(housePrice);
+  }
+  housePrice.reportValidity();
+};
+
+housePrice.addEventListener('input', onHousePriceInput);
+
+const houseType = document.querySelector('#type');
 
 const typeOfHouse = {
   bungalow: '0',
@@ -82,4 +159,4 @@ timeForm.addEventListener('change', (evt) => {
   timeOut.value = evt.target.value;
 });
 
-export { togglePageState, adForm, mapFilters };
+export { togglePageState, adForm, mapFilters, onHouseTitleInput, onHousePriceInput, houseTitle, housePrice, checkDefaultState };

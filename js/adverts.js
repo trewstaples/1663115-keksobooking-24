@@ -8,7 +8,7 @@ const fillTitle = (markupElement, attribute, data) => {
   }
 };
 
-const fillAdress = (markupElement, attribute, data) => {
+const fillAddress = (markupElement, attribute, data) => {
   if (data) {
     markupElement.querySelector(attribute).textContent = data;
   } else {
@@ -87,9 +87,9 @@ const fillPopupDescription = (markupElement, attribute, data) => {
 
 const fillPopupAvatar = (markupElement, attribute, data) => {
   if (data) {
-    markupElement.querySelector(attribute).remove();
-  } else {
     markupElement.querySelector(attribute).src = data;
+  } else {
+    markupElement.querySelector(attribute).remove();
   }
 };
 
@@ -116,7 +116,7 @@ const createAdvert = (advert) => {
   const newAdvert = advertsTemplate.cloneNode(true);
 
   fillTitle(newAdvert, '.popup__title', offer.title);
-  fillAdress(newAdvert, '.popup__text--address', offer.address);
+  fillAddress(newAdvert, '.popup__text--address', offer.address);
   fillPrice(newAdvert, '.popup__text--price', offer.price);
   fillType(newAdvert, '.popup__type', offer.type, getOfferType(offer.type));
   fillTextCapacity(newAdvert, '.popup__text--capacity', offer.rooms, offer.guests);
