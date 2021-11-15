@@ -29,14 +29,11 @@ const filterRules = {
   'housing-guests': (data, filter) => filter.value === data.offer.guests.toString(),
 
   'housing-features': (data, filter) => {
-    const checkListElements = Array.from(filter.querySelectorAll('input[type="checkbox"]:checked'));
-
-    //Записывам в массив все выбранные чекбосы
-    //.every - для каждого чекбокса проверяем
-    //.some есть ли в массиве фич текущего объявления
-    //feature === checkbox.value элемент равный значению чекбокса
     if (data.offer.features) {
+      const checkListElements = Array.from(filter.querySelectorAll('input[type="checkbox"]:checked'));
       return checkListElements.every((checkbox) => data.offer.features.some((feature) => feature === checkbox.value));
+    } else {
+      return false;
     }
   },
 };
