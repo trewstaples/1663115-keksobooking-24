@@ -128,12 +128,23 @@ const onMapFiltersChange = debounce(() => {
   renderMarkers(filterData(offers));
 });
 
+const setMapView = () => {
+  map.setView(
+    {
+      lat: Map.LAT,
+      lng: Map.LNG,
+    },
+    Map.SCALE,
+  );
+};
+
 const inputPrice = adForm.querySelector('#price');
 const resetPage = () => {
   adForm.reset();
   mapFilters.reset();
   inputPrice.placeholder = minHousePrice.flat;
   inputPrice.min = minHousePrice.flat;
+  setMapView();
   setMainMarkerAddress();
   setMapAddress();
   map.closePopup();
