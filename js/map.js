@@ -68,7 +68,7 @@ const getMainMarkerAddress = (address) => {
   mapAddress.value = `${address.lat.toFixed(DECIMALS_NUMBER)}, ${address.lng.toFixed(DECIMALS_NUMBER)}`;
 };
 
-mainMarker.on('moveend', (evt) => {
+mainMarker.on('move', (evt) => {
   getMainMarkerAddress(evt.target.getLatLng());
 });
 
