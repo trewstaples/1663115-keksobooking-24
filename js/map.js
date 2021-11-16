@@ -18,20 +18,26 @@ const Map = {
   LNG: 139.753927,
 };
 
-const Marker = {
-  MAIN_IMAGE: './img/main-pin.svg',
+const MainMarker = {
+  IMAGE: './img/main-pin.svg',
   GENERAL_IMAGE: './img/pin.svg',
   WIDTH: 52,
   HEIGHT: 52,
+};
+
+const GeneralMarker = {
+  IMAGE: './img/pin.svg',
+  WIDTH: 40,
+  HEIGHT: 40,
 };
 
 const map = L.map('map-canvas');
 L.tileLayer(Map.ADDRESS, Map.ATTRIBUTION).addTo(map);
 
 const mainIcon = L.icon({
-  iconUrl: Marker.MAIN_IMAGE,
-  iconSize: [Marker.WIDTH, Marker.HEIGHT],
-  iconAnchor: [Marker.WIDTH / 2, Marker.HEIGHT],
+  iconUrl: MainMarker.IMAGE,
+  iconSize: [MainMarker.WIDTH, MainMarker.HEIGHT],
+  iconAnchor: [MainMarker.WIDTH / 2, MainMarker.HEIGHT],
 });
 
 const mainMarker = L.marker(
@@ -67,9 +73,9 @@ mainMarker.on('moveend', (evt) => {
 });
 
 const generalIcon = L.icon({
-  iconUrl: Marker.GENERAL_IMAGE,
-  iconSize: [Marker.WIDTH, Marker.HEIGHT],
-  iconAnchor: [Marker.WIDTH / 2, Marker.HEIGHT],
+  iconUrl: GeneralMarker.IMAGE,
+  iconSize: [GeneralMarker.WIDTH, GeneralMarker.HEIGHT],
+  iconAnchor: [GeneralMarker.WIDTH / 2, GeneralMarker.HEIGHT],
 });
 
 const markers = [];
