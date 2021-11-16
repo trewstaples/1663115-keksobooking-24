@@ -2,30 +2,23 @@ import { adForm, onHouseTitleInput, onHousePriceInput, houseTitle, housePrice, c
 import { request } from './request.js';
 import { resetPage } from './map.js';
 
-const exitEscKeyDown = (element) => {
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      evt.preventDefault();
-      element.remove();
-    }
-  });
-};
-
-const exitPageClick = (element) => {
-  document.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    element.remove();
-  });
-};
-
 const successAlert = document.querySelector('#success').content.querySelector('.success');
 const errorAlert = document.querySelector('#error').content.querySelector('.error');
 
+const onAlertEscKeydown = (evt) => {
+  if (evt.key === 'Escape' || evt.key === 'Esc') {
+    successAlert.remove();
+    errorAlert.remove();
+  }
+};
+
+const onPageClick = () => {
+  successAlert.remove();
+  errorAlert.remove();
+};
+
 const showSuccessAlert = () => {
   document.body.append(successAlert);
-
-  exitEscKeyDown(successAlert);
-  exitPageClick(successAlert);
 };
 
 const onUploadSuccess = () => {
@@ -36,9 +29,6 @@ const onUploadSuccess = () => {
 const onUploadError = () => {
   document.body.append(errorAlert);
 
-  exitEscKeyDown(errorAlert);
-  exitPageClick(errorAlert);
-
   const errorButton = document.querySelector('.error__button');
   errorButton.addEventListener('click', (evt) => {
     evt.preventDefault();
@@ -46,13 +36,22 @@ const onUploadError = () => {
   });
 };
 
-const buttonSubmit = document.querySelector('.ad-form__submit');
-
-buttonSubmit.addEventListener('click', (evt) => {
-  evt.preventDefault();
+const onButtonSubmitClick = () => {
   onHouseTitleInput();
   onHousePriceInput();
+};
+const buttonSubmit = document.querySelector('.ad-form__submit');
+
+buttonSubmit.addEventListener('click', () => {
+  onButtonSubmitClick();
+});
+
+adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
   if (checkDefaultState(houseTitle) && checkDefaultState(housePrice)) {
     request(onUploadSuccess, onUploadError, 'POST', new FormData(adForm));
+    document.addEventListener('keydown', onAlertEscKeydown);
+    document.addEventListener('click', onPageClick);
   }
 });
