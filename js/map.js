@@ -1,4 +1,4 @@
-import { togglePageState, adForm, mapFilters, minHousePrice } from './form.js';
+import { toggleFormState, toggleFiltersState, adForm, mapFilters, minHousePrice } from './form.js';
 import { createAdvert } from './adverts.js';
 import { debounce } from './debounce.js';
 import { filterData } from './filter.js';
@@ -141,6 +141,7 @@ const resetPage = () => {
 };
 
 const onDownloadSuccess = (data) => {
+  toggleFiltersState();
   offers = data.slice();
 
   renderMarkers(offers.slice(0, ADVERT_COUNT));
@@ -156,7 +157,7 @@ const onDownloadSuccess = (data) => {
 
 map
   .on('load', () => {
-    togglePageState();
+    toggleFormState();
     request(onDownloadSuccess, onDownloadError, 'GET');
   })
   .setView(

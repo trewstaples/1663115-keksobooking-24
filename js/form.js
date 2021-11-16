@@ -15,22 +15,27 @@ const TitleLength = {
 
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
-const disabledFields = document.querySelectorAll('fieldset, select.map__filter');
+const disabledFields = document.querySelectorAll('fieldset');
+const disabledFilters = document.querySelectorAll('select.map__filter, fieldset.map__features');
 
-const setDisabledState = () => {
-  disabledFields.forEach((element) => {
+const setDisabledState = (elements) => {
+  elements.forEach((element) => {
     element.disabled = !element.disabled;
   });
 };
 
-const togglePageState = () => {
+const toggleFormState = () => {
   adForm.classList.toggle('ad-form--disabled');
-  mapFilters.classList.toggle('map__filters--disabled');
-
-  setDisabledState();
+  setDisabledState(disabledFields);
 };
 
-togglePageState();
+const toggleFiltersState = () => {
+  mapFilters.classList.toggle('map__filters--disabled');
+  setDisabledState(disabledFilters);
+};
+
+toggleFormState();
+toggleFiltersState();
 
 const roomNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
@@ -159,4 +164,4 @@ timeForm.addEventListener('change', (evt) => {
   timeOut.value = evt.target.value;
 });
 
-export { togglePageState, adForm, mapFilters, onHouseTitleInput, onHousePriceInput, houseTitle, housePrice, minHousePrice, checkDefaultState };
+export { toggleFormState, toggleFiltersState, adForm, mapFilters, onHouseTitleInput, onHousePriceInput, houseTitle, housePrice, minHousePrice, checkDefaultState };
