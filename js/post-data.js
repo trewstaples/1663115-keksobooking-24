@@ -48,12 +48,14 @@ const onAlertEscKeydown = (evt) => {
   if (evt.key === 'Escape' || evt.key === 'Esc') {
     successAlert.remove();
     errorAlert.remove();
+    document.removeEventListener('keydown', onAlertEscKeydown);
   }
 };
 
 const onPageClick = () => {
   successAlert.remove();
   errorAlert.remove();
+  document.removeEventListener('keydown', onAlertEscKeydown);
 };
 
 const showSuccessAlert = () => {
@@ -63,6 +65,10 @@ const showSuccessAlert = () => {
 const onUploadSuccess = () => {
   showSuccessAlert();
   resetPage();
+  const success = document.querySelector('.overlay');
+
+  document.addEventListener('keydown', onAlertEscKeydown);
+  success.addEventListener('click', onPageClick);
 };
 
 const onUploadError = () => {
@@ -90,7 +96,5 @@ adForm.addEventListener('submit', (evt) => {
 
   if (checkDefaultState(houseTitle) && checkDefaultState(housePrice)) {
     request(onUploadSuccess, onUploadError, 'POST', new FormData(adForm));
-    document.addEventListener('keydown', onAlertEscKeydown);
-    document.addEventListener('click', onPageClick);
   }
 });
