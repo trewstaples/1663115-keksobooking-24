@@ -31,6 +31,14 @@ const GeneralMarker = {
   HEIGHT: 40,
 };
 
+const Photo = {
+  WIDTH: 70,
+  HEIGHT: 70,
+  ALT: 'Фотографии пользователя',
+  FILE_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
+  DEFAULT_SRC: 'http://localhost:3000/img/muffin-grey.svg',
+};
+
 const map = L.map('map-canvas');
 L.tileLayer(Map.ADDRESS, Map.ATTRIBUTION).addTo(map);
 
@@ -138,10 +146,45 @@ const setMapView = () => {
   );
 };
 
+const avatarPreview = document.querySelector('.ad-form-header__preview img');
+const avatarChooser = document.querySelector('.ad-form__field input[type=file]');
+
+avatarChooser.addEventListener('change', () => {
+  const file = avatarChooser.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = Photo.FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    avatarPreview.src = URL.createObjectURL(file);
+  }
+});
+
+const photoChooser = document.querySelector('.ad-form__upload input[type=file]');
+const photoPreview = document.querySelector('.ad-form-header__preview img').cloneNode(true);
+
+photoChooser.addEventListener('change', () => {
+  const file = photoChooser.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = Photo.FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    const photoContainer = document.querySelector('.ad-form__photo');
+    photoContainer.appendChild(photoPreview);
+    photoPreview.alt = Photo.ALT;
+    photoPreview.width = Photo.WIDTH;
+    photoPreview.height = Photo.HEIGHT;
+    photoPreview.src = URL.createObjectURL(file);
+  }
+});
+
 const inputPrice = adForm.querySelector('#price');
 const resetPage = () => {
   adForm.reset();
   mapFilters.reset();
+  avatarPreview.src = Photo.DEFAULT_SRC;
+  photoPreview.remove();
   inputPrice.placeholder = minHousePrice.flat;
   inputPrice.min = minHousePrice.flat;
   setMapView();
